@@ -13,6 +13,7 @@ fetch("./data.json")
       article.className = "job-listing-card";
 
       article.dataset.location = job.data.modalidad;
+      article.dataset.nivel = job.data.nivel;
 
       article.innerHTML = `
       <div>
