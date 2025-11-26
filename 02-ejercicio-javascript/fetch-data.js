@@ -12,6 +12,8 @@ fetch("./data.json")
       const article = document.createElement("article");
       article.className = "job-listing-card";
 
+      article.dataset.location = job.data.modalidad;
+
       article.innerHTML = `
       <div>
         <h3>${job.titulo}</h3>
