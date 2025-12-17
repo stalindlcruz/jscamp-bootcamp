@@ -1,75 +1,54 @@
 /* Aquí va la lógica para filtrar los resultados de búsqueda */
+
+/* 
+Hola Stalin! Muy buena solución :)
+Lo que vamos a hacer es unos cambios para que podamos aplicar filtros múltiples y no individuales.
+Lo que quiero decir con esto es que:
+- Cada vez que buscamos por el `input`, el filtro que pusimos en el select se pierde
+- Cada vez que hacemos un filtro por un select, al agregar otro solo se aplica el último
+
+Y esto pasa porque al aplicar un `change` en los `addEventListener`, aplicamos los filtros a la lista completa, y no solo a los resultados ya filtrados previamente.
+
+Lo que haremos es, crear una función que funcione para filtrar los resultados teniendo en cuenta todos los filtros activos. Y luego llamarla desde cada `addEventListener`.
+*/
 const filterLocation = document.querySelector("#filter-location");
 const filterExperience = document.querySelector("#filter-experience-level");
 const filterTittle = document.querySelector("#empleos-search-input");
 const filterTech = document.querySelector("#filter-technology");
 
-filterLocation?.addEventListener("change", () => {
+const handleFilterJobsResults = () => {
+  const locationValue = filterLocation.value;
+  const experienceValue = filterExperience.value;
+  const techValue = filterTech.value;
+  const titleValue = filterTittle.value.toLowerCase().trim();
+  
   const jobs = document.querySelectorAll(".job-listing-card");
-  const selectedValue = filterLocation.value;
 
   jobs.forEach((job) => {
     const location = job.dataset.location;
-
-    if (selectedValue === "" || selectedValue === location) {
-      job.classList.remove("is-hidden");
-    } else {
-      job.classList.add("is-hidden");
-    }
-  });
-});
-
-filterExperience?.addEventListener("change", () => {
-  const jobs = document.querySelectorAll(".job-listing-card");
-  const selectedValue = filterExperience.value;
-
-  jobs.forEach((job) => {
     const experience = job.dataset.nivel;
+    const title = job.querySelector("h3").textContent.toLowerCase();
+    const technologies = job.dataset.technology?.split(",") || [];
 
-    if (selectedValue === "" || selectedValue === experience) {
-      job.classList.remove("is-hidden");
-    } else {
-      job.classList.add("is-hidden");
-    }
-  });
-});
+    // aplicamos los filtros en conjunto
+    const locationMatch = locationValue === "" || locationValue === location;
+    const experienceMatch = experienceValue === "" || experienceValue === experience;
+    const titleMatch = titleValue === "" || title.includes(titleValue);
+    const techMatch = techValue === "" || technologies.includes(techValue);
 
-filterTittle?.addEventListener("input", () => {
-  const jobs = Array.from(document.querySelectorAll(".job-listing-card"));
-  const inputValue = filterTittle.value.toLowerCase().trim();
+    const isShow = locationMatch && experienceMatch && titleMatch && techMatch;
 
-  const filteredJobs = jobs.filter((job) => {
-    const tittle = job.dataset.input.toLowerCase();
-    return tittle.includes(inputValue);
-  });
+    job.classList.toggle("is-hidden", !isShow);
+  })
 
-  jobs.forEach((job) => job.classList.add("is-hidden"));
+};
 
-  filteredJobs.forEach((job) => job.classList.remove("is-hidden"));
-});
+// llamamos a la función de filtrado cuando cambien los filtros
+filterLocation?.addEventListener("change", handleFilterJobsResults);
+filterExperience?.addEventListener("change", handleFilterJobsResults);
+filterTech?.addEventListener("change", handleFilterJobsResults);
+filterTittle?.addEventListener("input", handleFilterJobsResults);
 
-filterTech?.addEventListener("change", () => {
-  const jobs = document.querySelectorAll(".job-listing-card");
-  const selectedValue = filterTech.value;
-
-  jobs.forEach((job) => {
-    const techData = job.dataset.technology;
-
-    if (!techData) return;
-
-    let technologyArray;
-
-    try {
-      technologyArray = JSON.parse(techData);
-      if (!Array.isArray(technologyArray)) throw new Error();
-    } catch {
-      technologyArray = techData.split(",").map((t) => t.trim());
-    }
-
-    if (selectedValue === "" || technologyArray.includes(selectedValue)) {
-      job.classList.remove("is-hidden");
-    } else {
-      job.classList.add("is-hidden");
-    }
-  });
-});
+// un extra es que evitemos recargar la página al presionar Enter en el input
+const formContainer = document.getElementById("empleos-search-form");
+formContainer?.addEventListener("submit", (e) => e.preventDefault());
