@@ -7,6 +7,13 @@ fetch("./data.json")
     return response.json();
   })
   .then((jobs) => {
+    /* 
+    createDocumentFragment() lo que hace es crear un contenedor en memoria que sirve para almacenar todos los elementos del DOM que queremos pintar.
+    Para que sirve esto? Para evitar re dibujar el HTML cada vez que insertamos un elemento dentro del forEach. Lo que hacemos es: agregamos los elementos en el contenedor virtual, y una vez estén todos, pintamos de una sola vez lo que hay en el contenedor sobre el DOM.
+    Esto mejora bastante el rendimiento, sobre todo cuando tenemos muchos elementos :)
+    */
+    const documentFragment = document.createDocumentFragment()
+
     jobs.forEach((job) => {
       const list = document.createElement("li");
       const article = document.createElement("article");
@@ -26,6 +33,8 @@ fetch("./data.json")
       <button class="button-apply-job">Aplicar</button>
       `;
       list.appendChild(article);
-      container.appendChild(list);
+      documentFragment.appendChild(list)
     });
+    
+    container.appendChild(documentFragment);
   });
