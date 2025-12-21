@@ -11,6 +11,7 @@ Y esto pasa porque al aplicar un `change` en los `addEventListener`, aplicamos l
 
 Lo que haremos es, crear una función que funcione para filtrar los resultados teniendo en cuenta todos los filtros activos. Y luego llamarla desde cada `addEventListener`.
 */
+
 const filterLocation = document.querySelector("#filter-location");
 const filterExperience = document.querySelector("#filter-experience-level");
 const filterTittle = document.querySelector("#empleos-search-input");
@@ -21,7 +22,7 @@ const handleFilterJobsResults = () => {
   const experienceValue = filterExperience.value;
   const techValue = filterTech.value;
   const titleValue = filterTittle.value.toLowerCase().trim();
-  
+
   const jobs = document.querySelectorAll(".job-listing-card");
 
   jobs.forEach((job) => {
@@ -32,15 +33,15 @@ const handleFilterJobsResults = () => {
 
     // aplicamos los filtros en conjunto
     const locationMatch = locationValue === "" || locationValue === location;
-    const experienceMatch = experienceValue === "" || experienceValue === experience;
+    const experienceMatch =
+      experienceValue === "" || experienceValue === experience;
     const titleMatch = titleValue === "" || title.includes(titleValue);
     const techMatch = techValue === "" || technologies.includes(techValue);
 
     const isShow = locationMatch && experienceMatch && titleMatch && techMatch;
 
     job.classList.toggle("is-hidden", !isShow);
-  })
-
+  });
 };
 
 // llamamos a la función de filtrado cuando cambien los filtros
