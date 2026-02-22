@@ -9,7 +9,7 @@ function App() {
       <Header />
       <main>
         <SearchForm />
-        <SearchResults />
+        <SearchResults key={1} />
       </main>
       <Footer />
     </>
