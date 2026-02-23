@@ -4,9 +4,7 @@ import data from "../data.json";
 export function SearchResults() {
   return (
     <section>
-      <h2 className="tittle-" style={{ textAlign: "center" }}>
-        Resultados de búsqueda
-      </h2>
+      <h2 style={{ textAlign: "center" }}>Resultados de búsqueda</h2>
 
       <JobListings data={data} />
 
