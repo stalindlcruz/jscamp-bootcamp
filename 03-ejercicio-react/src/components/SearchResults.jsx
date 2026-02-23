@@ -5,15 +5,15 @@ export function SearchResults() {
     <>
       <section>
         <h2 style={{ textAlign: "center" }}>Resultados de búsqueda</h2>
-        {data.length === 0 && (
-          <>
-            <p>No se han encontrado empleos que coincidan con la busqueda</p>
-          </>
-        )}
-        {data.map((job) => {
-          return (
-            <div key={job.id} className="jobs-listings">
+        <div className="jobs-listings">
+          {data.length === 0 && (
+            <p>No se han encontrado empleos que coincidan con la búsqueda</p>
+          )}
+
+          {data.map((job) => {
+            return (
               <article
+                key={job.id}
                 className="job-listing-card"
                 data-modalidad={job.data.modalidad}
                 data-nivel={job.data.nivel}
@@ -28,9 +28,9 @@ export function SearchResults() {
                 </div>
                 <button className="button-apply-job">Aplicar</button>
               </article>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
 
         <nav className="pagination">
           <a href="#">
