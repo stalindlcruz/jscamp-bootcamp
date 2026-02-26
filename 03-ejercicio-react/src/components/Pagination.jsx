@@ -1,29 +1,14 @@
+import { usePagination } from "../hooks/usePagination";
+
 export function Pagination({ totalPages = 10, currentPage = 1, onPageChange }) {
-  const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
-
-  const isFirstPage = currentPage === 1;
-  const isLastPage = currentPage === totalPages;
-
-  const prevButton = isFirstPage ? { pointerEvents: "none", opacity: 0.5 } : {};
-  const nextButton = isLastPage ? { pointerEvents: "none", opacity: 0.5 } : {};
-
-  const handlePrevClick = () => {
-    if (!isFirstPage) {
-      onPageChange(currentPage - 1);
-    }
-  };
-
-  const handleNextClick = () => {
-    if (!isLastPage) {
-      onPageChange(currentPage + 1);
-    }
-  };
-
-  const handlePageClick = (page) => {
-    if (page !== currentPage) {
-      onPageChange(page);
-    }
-  };
+  const {
+    pages,
+    prevButton,
+    nextButton,
+    handlePrevClick,
+    handleNextClick,
+    handlePageClick,
+  } = usePagination(totalPages, currentPage, onPageChange);
 
   return (
     <nav className="pagination">
@@ -48,7 +33,9 @@ export function Pagination({ totalPages = 10, currentPage = 1, onPageChange }) {
           type="button"
           style={currentPage === page ? { color: "red" } : {}}
           key={page}
-          onClick={handlePageClick}
+          onClick={(event) => {
+            handlePageClick(event, page);
+          }}
         >
           {page}
         </button>

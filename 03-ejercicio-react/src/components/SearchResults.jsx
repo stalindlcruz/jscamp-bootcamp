@@ -1,16 +1,12 @@
+import data from "../data.json";
+
 import { JobListings } from "./JobListings.jsx";
 import { Pagination } from "./Pagination.jsx";
 
-import data from "../data.json";
-
-import { useState } from "react";
+import { useSearchResults } from "../hooks/useSearchResults.jsx";
 
 export function SearchResults() {
-  const [currentPage, setcurrentPage] = useState(1);
-
-  const handlePageChange = (page) => {
-    setcurrentPage(page);
-  };
+  const { currentPage, handlePageChange } = useSearchResults();
 
   return (
     <section>
