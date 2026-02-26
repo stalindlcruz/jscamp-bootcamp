@@ -1,0 +1,29 @@
+.btnLastNext {
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.5rem;
+    padding: none;
+    border: none;
+}
+
+.btn {
+    border-radius: 1rem;
+    transition: all 0.3s;
+    
+    &:active{
+        transform: scale(0.9);
+        transition: all 0.5s;
+    }
+
+    &:hover, &:focus {
+        background-color: #09f;
+        outline: none;
+    }
+}
+
+.isActive {
+    background-color: #09f;
+    pointer-events: none;
+}

@@ -1,4 +1,5 @@
-import { usePagination } from "../hooks/usePagination";
+import { usePagination } from "../hooks/usePagination.jsx";
+import styles from "./Pagination.module.css";
 
 export function Pagination({ totalPages = 10, currentPage = 1, onPageChange }) {
   const {
@@ -12,7 +13,12 @@ export function Pagination({ totalPages = 10, currentPage = 1, onPageChange }) {
 
   return (
     <nav className="pagination">
-      <button type="button" style={prevButton} onClick={handlePrevClick}>
+      <button
+        className={`${styles.btn} ${styles.btnLastNext}`}
+        type="button"
+        style={prevButton}
+        onClick={handlePrevClick}
+      >
         <svg
           width="16"
           height="16"
@@ -31,7 +37,7 @@ export function Pagination({ totalPages = 10, currentPage = 1, onPageChange }) {
       {pages.map((page) => (
         <button
           type="button"
-          style={currentPage === page ? { color: "red" } : {}}
+          className={`${styles.btn} ${currentPage === page ? styles.isActive : ""} {styles.page}`}
           key={page}
           onClick={(event) => {
             handlePageClick(event, page);
@@ -41,7 +47,12 @@ export function Pagination({ totalPages = 10, currentPage = 1, onPageChange }) {
         </button>
       ))}
 
-      <button type="button" style={nextButton} onClick={handleNextClick}>
+      <button
+        className={`${styles.btn}`}
+        type="button"
+        style={nextButton}
+        onClick={handleNextClick}
+      >
         <svg
           width="16"
           height="16"
