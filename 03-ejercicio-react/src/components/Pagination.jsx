@@ -1,6 +1,4 @@
-import { useState } from "react";
-
-export function Pagination({ totalPages = 10, currentPage = 1 }) {
+export function Pagination({ totalPages = 10, currentPage = 1, onPageChange }) {
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
 
   const isFirstPage = currentPage === 1;
@@ -9,13 +7,27 @@ export function Pagination({ totalPages = 10, currentPage = 1 }) {
   const prevButton = isFirstPage ? { pointerEvents: "none", opacity: 0.5 } : {};
   const nextButton = isLastPage ? { pointerEvents: "none", opacity: 0.5 } : {};
 
-  //   const [currentPage, setCurrentPage] = useState(1);
-  //   setCurrentPage(2);
-  //   console.log(currentPage);
+  const handlePrevClick = () => {
+    if (!isFirstPage) {
+      onPageChange(currentPage - 1);
+    }
+  };
+
+  const handleNextClick = () => {
+    if (!isLastPage) {
+      onPageChange(currentPage + 1);
+    }
+  };
+
+  const handlePageClick = (page) => {
+    if (page !== currentPage) {
+      onPageChange(page);
+    }
+  };
 
   return (
     <nav className="pagination">
-      <button style={prevButton}>
+      <button type="button" style={prevButton} onClick={handlePrevClick}>
         <svg
           width="16"
           height="16"
@@ -32,12 +44,17 @@ export function Pagination({ totalPages = 10, currentPage = 1 }) {
       </button>
 
       {pages.map((page) => (
-        <button style={currentPage === page ? { color: "red" } : {}} key={page}>
+        <button
+          type="button"
+          style={currentPage === page ? { color: "red" } : {}}
+          key={page}
+          onClick={handlePageClick}
+        >
           {page}
         </button>
       ))}
 
-      <button style={nextButton}>
+      <button type="button" style={nextButton} onClick={handleNextClick}>
         <svg
           width="16"
           height="16"
