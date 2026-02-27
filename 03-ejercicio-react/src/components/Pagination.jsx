@@ -37,7 +37,7 @@ export function Pagination({ totalPages = 10, currentPage = 1, onPageChange }) {
       {pages.map((page) => (
         <button
           type="button"
-          className={`${styles.btn} ${currentPage === page ? styles.isActive : ""} {styles.page}`}
+          className={`${styles.btn} ${currentPage === page ? styles.isActive : ""}`}
           key={page}
           onClick={(event) => {
             handlePageClick(event, page);
@@ -48,7 +48,7 @@ export function Pagination({ totalPages = 10, currentPage = 1, onPageChange }) {
       ))}
 
       <button
-        className={`${styles.btn}`}
+        className={`${styles.btn} ${styles.btnLastNext}`}
         type="button"
         style={nextButton}
         onClick={handleNextClick}

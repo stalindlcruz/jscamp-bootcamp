@@ -15,7 +15,7 @@ export function SearchResults() {
       <JobListings data={data} />
 
       <Pagination
-        totalPages={10}
+        totalPages={5}
         currentPage={currentPage}
         onPageChange={handlePageChange}
       />

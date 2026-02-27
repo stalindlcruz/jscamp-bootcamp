@@ -1,11 +1,5 @@
 .btnLastNext {
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 1.5rem;
-    padding: none;
-    border: none;
+    margin-inline: .5rem;
 }
 
 .btn {
