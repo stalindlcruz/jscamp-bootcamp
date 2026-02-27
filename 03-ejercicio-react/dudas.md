@@ -16,6 +16,12 @@
 
 <!-- Dudas de la cuarta parte del ejercicio -->
 
+Tengo la siguiente sobre el boton que le estamos haciendo el .map y es que en el onClick cuando le pasamos la función de lo que hará cuando el usuario haga click, le debemos pasar el page pero en este caso también le pase el event, para poder prevenir el comportamiento por defecto, pero me he dado cuenta que los botones solo tienen un comportamiento por defecto de "submit" dentro de un form.
+
+Mi pregunta sería la siguiente:
+
+Sería buena práctica recibir el event y prevenir su comportamiento por defecto aunque no este haciendo nada o simplemente no usarlo?
+
 ## Quinta parte
 
 <!-- Dudas de la quinta parte del ejercicio -->
