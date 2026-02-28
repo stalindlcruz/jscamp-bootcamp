@@ -6,16 +6,17 @@ import { Pagination } from "./Pagination.jsx";
 import { useSearchResults } from "../hooks/useSearchResults.jsx";
 
 export function SearchResults() {
-  const { currentPage, handlePageChange } = useSearchResults();
+  const { currentPage, handlePageChange, totalPages, pageResults } =
+    useSearchResults(data);
 
   return (
     <section>
       <h2 style={{ textAlign: "center" }}>Resultados de búsqueda</h2>
 
-      <JobListings data={data} />
+      <JobListings data={pageResults} />
 
       <Pagination
-        totalPages={5}
+        totalPages={totalPages}
         currentPage={currentPage}
         onPageChange={handlePageChange}
       />
