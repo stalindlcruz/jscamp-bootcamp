@@ -1,14 +1,12 @@
-import data from "../data.json";
-
 import { JobListings } from "./JobListings.jsx";
 import { Pagination } from "./Pagination.jsx";
 
-import { useSearchResults } from "../hooks/useSearchResults.jsx";
-
-export function SearchResults() {
-  const { currentPage, handlePageChange, totalPages, pageResults } =
-    useSearchResults(data);
-
+export function SearchResults({
+  pageResults,
+  totalPages,
+  currentPage,
+  onPageChange,
+}) {
   return (
     <section>
       <h2 style={{ textAlign: "center" }}>Resultados de búsqueda</h2>
@@ -18,7 +16,7 @@ export function SearchResults() {
       <Pagination
         totalPages={totalPages}
         currentPage={currentPage}
-        onPageChange={handlePageChange}
+        onPageChange={onPageChange}
       />
     </section>
   );
