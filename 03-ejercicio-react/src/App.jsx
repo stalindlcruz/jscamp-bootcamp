@@ -14,7 +14,7 @@ function App() {
   const [filters, setFilters] = useState({
     technology: "",
     location: "",
-    experienceLevel: "",
+    experience: "",
   });
 
   const jobsFilteredByFilters = data.filter((job) => {
@@ -24,8 +24,8 @@ function App() {
           filters.technology.toLowerCase()) &&
       (filters.location === "" ||
         job.data.modalidad.toLowerCase() === filters.location.toLowerCase()) &&
-      (filters.experienceLevel === "" ||
-        job.data.nivel.toLowerCase() === filters.experienceLevel.toLowerCase())
+      (filters.experience === "" ||
+        job.data.nivel.toLowerCase() === filters.experience.toLowerCase())
     );
   });
 
@@ -57,10 +57,14 @@ function App() {
     setcurrentPage(1);
   };
 
+  const totalJobs = jobsWithTextFilter.length;
+  const tittle = `Resultados ${totalJobs}, Página ${totalPages}`;
+
   return (
     <>
       <Header />
       <main>
+        <title>{tittle}</title>
         <SearchForm onSearch={handleSearch} onTextFilter={handleTextFilter} />
         <SearchResults
           pageResults={pageResults}

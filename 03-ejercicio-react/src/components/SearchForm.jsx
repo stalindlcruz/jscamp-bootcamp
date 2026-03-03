@@ -1,37 +1,72 @@
 import { useId } from "react";
 
+let timeoutId = null;
+
 export function SearchForm({ onSearch, onTextFilter }) {
   const idText = useId();
   const idTechnology = useId();
   const idLocation = useId();
-  const idExperienceLevel = useId();
+  const idExperience = useId();
 
-  const hanndleSubmit = (event) => {
+  const handleChange = (event) => {
     event.preventDefault();
 
-    const formData = new FormData(event.currentTarget);
+    if (event.target.name === idText) {
+      const text = event.target.value;
 
-    const filters = {
-      search: formData.get(idText),
-      technology: formData.get(idTechnology),
-      location: formData.get(idLocation),
-      experienceLevel: formData.get(idExperienceLevel),
-    };
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
 
-    onSearch(filters);
+      timeoutId = setTimeout(() => {
+        onTextFilter(text);
+      }, 500);
+    } else {
+      const formData = new FormData(event.currentTarget);
+
+      const filters = {
+        technology: formData.get(idTechnology),
+        location: formData.get(idLocation),
+        experience: formData.get(idExperience),
+      };
+
+      onSearch(filters);
+    }
   };
 
-  const handleTextChange = (event) => {
-    const text = event.target.value;
-    onTextFilter(text);
-  };
+  // const hanndleSubmit = (event) => {
+  //   event.preventDefault();
+
+  //   const formData = new FormData(event.currentTarget);
+
+  //   const filters = {
+  //     search: formData.get(idText),
+  //     technology: formData.get(idTechnology),
+  //     location: formData.get(idLocation),
+  //     experienceLevel: formData.get(idExperience),
+  //   };
+
+  //   onSearch(filters);
+  // };
+
+  // const handleTextChange = (event) => {
+  //   const text = event.target.value;
+
+  //   if (timeoutId) {
+  //     clearTimeout(timeoutId);
+  //   }
+
+  //   timeoutId = setTimeout(() => {
+  //     onTextFilter(text);
+  //   }, 500);
+  // };
 
   return (
     <section className="jobs-search">
       <h1>Encuentra tu próximo trabajo</h1>
       <p>Explora miles de oportunidades en el sector tecnológico.</p>
 
-      <form onChange={hanndleSubmit} id="empleos-search-form" role="search">
+      <form onChange={handleChange} id="empleos-search-form" role="search">
         <div className="search-bar">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -54,7 +89,6 @@ export function SearchForm({ onSearch, onTextFilter }) {
             type="text"
             name={idText}
             placeholder="Buscar trabajos, empresas o habilidades"
-            onChange={handleTextChange}
           />
         </div>
 
@@ -86,7 +120,7 @@ export function SearchForm({ onSearch, onTextFilter }) {
             <option value="barcelona">Barcelona</option>
           </select>
 
-          <select name={idExperienceLevel} id="filter-experience-level">
+          <select name={idExperience} id="filter-experience-level">
             <option value="">Nivel de experiencia</option>
             <option value="junior">Junior</option>
             <option value="mid">Mid-level</option>
