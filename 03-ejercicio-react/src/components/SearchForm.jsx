@@ -34,33 +34,6 @@ export function SearchForm({ onSearch, onTextFilter }) {
     }
   };
 
-  // const hanndleSubmit = (event) => {
-  //   event.preventDefault();
-
-  //   const formData = new FormData(event.currentTarget);
-
-  //   const filters = {
-  //     search: formData.get(idText),
-  //     technology: formData.get(idTechnology),
-  //     location: formData.get(idLocation),
-  //     experienceLevel: formData.get(idExperience),
-  //   };
-
-  //   onSearch(filters);
-  // };
-
-  // const handleTextChange = (event) => {
-  //   const text = event.target.value;
-
-  //   if (timeoutId) {
-  //     clearTimeout(timeoutId);
-  //   }
-
-  //   timeoutId = setTimeout(() => {
-  //     onTextFilter(text);
-  //   }, 500);
-  // };
-
   return (
     <section className="jobs-search">
       <h1>Encuentra tu próximo trabajo</h1>

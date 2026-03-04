@@ -43,6 +43,34 @@ function App() {
     currentPage * RESULTS_PER_PAGE,
   );
 
+  const updateURL = (textToFilter, filters) => {
+    const params = new URLSearchParams();
+
+    if (textToFilter) {
+      params.set("text", textToFilter);
+    }
+
+    if (filters.technology) {
+      params.set("technology", filters.technology);
+    }
+
+    if (filters.location) {
+      params.set("location", filters.location);
+    }
+
+    if (filters.experience) {
+      params.set("experience", filters.experience);
+    }
+
+    const paramsString = params.toString();
+
+    const newUrl = paramsString
+      ? `${window.location.pathname}?${paramsString}`
+      : window.location.pathname;
+
+    window.history.replaceState({}, "", newUrl);
+  };
+
   const handlePageChange = (page) => {
     setcurrentPage(page);
   };
@@ -50,11 +78,13 @@ function App() {
   const handleSearch = (filters) => {
     setFilters(filters);
     setcurrentPage(1);
+    updateURL(textToFilter, filters);
   };
 
   const handleTextFilter = (newTextToFilter) => {
     setTextToFilter(newTextToFilter);
     setcurrentPage(1);
+    updateURL(newTextToFilter, filters);
   };
 
   const totalJobs = jobsWithTextFilter.length;
