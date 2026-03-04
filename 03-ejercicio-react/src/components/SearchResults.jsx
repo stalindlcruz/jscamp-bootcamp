@@ -13,11 +13,13 @@ export function SearchResults({
 
       <JobListings data={pageResults} />
 
-      <Pagination
-        totalPages={totalPages}
-        currentPage={currentPage}
-        onPageChange={onPageChange}
-      />
+      {totalPages > 0 && (
+        <Pagination
+          totalPages={totalPages}
+          currentPage={currentPage}
+          onPageChange={onPageChange}
+        />
+      )}
     </section>
   );
 }
