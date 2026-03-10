@@ -1,4 +1,24 @@
+import { useRouter } from "../hooks/useRouter.jsx";
+import { useId } from "react";
+
 export function HomePage() {
+  const idText = useId();
+
+  const { navigateTo } = useRouter();
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const searchTerm = formData.get(idText);
+
+    const url = searchTerm
+      ? `/search?text=${encodeURIComponent(searchTerm)}`
+      : "/search";
+
+    navigateTo(url);
+  };
+
   return (
     <main>
       <section>
@@ -11,7 +31,7 @@ export function HomePage() {
           próxima oportunidad.
         </p>
 
-        <form role="search">
+        <form role="search" onSubmit={handleSubmit}>
           <div>
             <svg
               width="24"
@@ -29,7 +49,7 @@ export function HomePage() {
             </svg>
 
             <input
-              name="search"
+              name={idText}
               required
               type="text"
               placeholder="Buscar empleos por título, habilidad o empresa"
