@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 
+import { HomePage } from "../pages/Home";
+import { SearchPage } from "../pages/Search";
+
 export function useRouter() {
   const [currentPathname, setCurrentPathname] = useState(
     window.location.pathname,
@@ -22,5 +25,12 @@ export function useRouter() {
     window.dispatchEvent(new PopStateEvent("popstate"));
   }
 
-  return { currentPathname, navigateTo };
+  const routes = [
+    { path: "/", component: HomePage },
+    { path: "/search", component: SearchPage },
+  ];
+
+  const route = routes.find((route) => route.path === currentPathname);
+
+  return { currentPathname, navigateTo, route };
 }
