@@ -34,6 +34,14 @@ Sería buena práctica recibir el event y prevenir su comportamiento por defecto
 
 <!-- Dudas de la séptima parte del ejercicio -->
 
+En esta parte del ejercicio, hice algo diferente a lo en el componente Route, en vez de solo comparar el path con el currentPathname, decidí usar un .find() para encontrar el route que coincida con el currentPathname. Porque en el caso de que no se encuentre el route, se renderice el componente NotFoundPage por defecto cada vez que el usuario navegue a una ruta que no existe.
+
+Mis preguntas serían las siguientes:
+
+1. No se si fue buena práctica crear un array de objetos donde paso la ruta y el componente en en mi hook useRouter en ves de pasarselos por props en App.jsx.
+
+2. Otra duda es que no se si fue buena práctica usar un .find() para encontrar el route que coincida con el currentPathname o es mejor usar un .filter() para encontrar el route que coincida con el currentPathname?
+
 ## Ejercicio extra
 
 <!-- Dudas del ejercicio extra -->

@@ -4,6 +4,9 @@ import data from "../data.json";
 const RESULTS_PER_PAGE = 5;
 
 export function useSearch() {
+  // const urlParams = new URLSearchParams(window.location.search);
+  // const urlText = urlParams.get("text") || "";
+
   const [currentPage, setcurrentPage] = useState(1);
   const [textToFilter, setTextToFilter] = useState("");
   const [filters, setFilters] = useState({
