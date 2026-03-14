@@ -16,6 +16,7 @@ export function SearchPage() {
     handlePageChange,
     handleReset,
     hasActiveFilters,
+    error,
   } = useSearch();
 
   const tittle = `Resultados ${totalJobs}, Páginas ${currentPage}`;
@@ -31,6 +32,7 @@ export function SearchPage() {
           hasActiveFilters={hasActiveFilters}
         />
         <SearchResults
+          error={error}
           jobs={jobs}
           totalPages={totalPages}
           currentPage={currentPage}

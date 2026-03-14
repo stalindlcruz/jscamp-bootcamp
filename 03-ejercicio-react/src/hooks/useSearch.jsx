@@ -42,6 +42,7 @@ export function useSearch() {
   const [jobs, setJobs] = useState([]);
   const [totalJobs, setTotalJobs] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     localStorage.setItem("filterJobs", JSON.stringify(filters));
@@ -58,10 +59,11 @@ export function useSearch() {
   useEffect(() => {
     async function fetchJobs() {
       try {
+        setError(null);
         setLoading(true);
 
         // delay 5 seconds
-        // await new Promise((resolve) => setTimeout(resolve, 5000));
+        await new Promise((resolve) => setTimeout(resolve, 5000));
 
         const urlParams = new URLSearchParams();
         if (textToFilter) urlParams.append("text", textToFilter);
@@ -79,10 +81,17 @@ export function useSearch() {
         const response = await fetch(
           `https://jscamp-api.vercel.app/api/jobs?${queryParams}`,
         );
+
+        if (!response.ok) {
+          throw new Error(`Error al obtener los empleos: ${response.status}`);
+        }
+
         const json = await response.json();
+
         setJobs(json.data);
         setTotalJobs(json.total);
       } catch (error) {
+        setError(error.message);
         console.error("Error fetching jobs:", error);
       } finally {
         setLoading(false);
@@ -175,5 +184,6 @@ export function useSearch() {
     handleTextFilter,
     handleReset,
     hasActiveFilters,
+    error,
   };
 }
