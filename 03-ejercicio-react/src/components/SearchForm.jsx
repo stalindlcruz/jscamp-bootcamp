@@ -2,7 +2,12 @@ import { useId } from "react";
 
 let timeoutId = null;
 
-export function SearchForm({ onSearch, onTextFilter }) {
+export function SearchForm({
+  onSearch,
+  onTextFilter,
+  onReset,
+  hasActiveFilters,
+}) {
   const idText = useId();
   const idTechnology = useId();
   const idLocation = useId();
@@ -34,6 +39,11 @@ export function SearchForm({ onSearch, onTextFilter }) {
     }
   };
 
+  const handleReset = () => {
+    document.querySelector("#empleos-search-form").reset();
+    onReset();
+  };
+
   return (
     <section className="jobs-search">
       <h1>Encuentra tu próximo trabajo</h1>
@@ -63,6 +73,12 @@ export function SearchForm({ onSearch, onTextFilter }) {
             name={idText}
             placeholder="Buscar trabajos, empresas o habilidades"
           />
+
+          {hasActiveFilters() && (
+            <button type="button" onClick={handleReset}>
+              Resetear
+            </button>
+          )}
         </div>
 
         <div className="search-filters">

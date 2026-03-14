@@ -6,25 +6,36 @@ import { useSearch } from "../hooks/useSearch.jsx";
 
 export function SearchPage() {
   const {
-    tittle,
+    jobs,
+    totalJobs,
+    loading,
     handleSearch,
     handleTextFilter,
-    pageResults,
     totalPages,
     currentPage,
     handlePageChange,
+    handleReset,
+    hasActiveFilters,
   } = useSearch();
+
+  const tittle = `Resultados ${totalJobs}, Páginas ${currentPage}`;
 
   return (
     <>
       <main>
         <title>{tittle}</title>
-        <SearchForm onSearch={handleSearch} onTextFilter={handleTextFilter} />
+        <SearchForm
+          onSearch={handleSearch}
+          onTextFilter={handleTextFilter}
+          onReset={handleReset}
+          hasActiveFilters={hasActiveFilters}
+        />
         <SearchResults
-          pageResults={pageResults}
+          jobs={jobs}
           totalPages={totalPages}
           currentPage={currentPage}
           onPageChange={handlePageChange}
+          loading={loading}
         />
       </main>
     </>
