@@ -113,6 +113,8 @@ export function SearchForm({
             <option value="guadalajara">Guadalajara</option>
             <option value="monterrey">Monterrey</option>
             <option value="barcelona">Barcelona</option>
+            <option value="valencia">Valencia</option>
+            <option value="madrid">Madrid</option>
           </select>
 
           <select name={idExperience} id="filter-experience-level">
