@@ -63,7 +63,7 @@ export function useSearch() {
         setLoading(true);
 
         // delay 5 seconds
-        // await new Promise((resolve) => setTimeout(resolve, 5000));
+        await new Promise((resolve) => setTimeout(resolve, 2000));
 
         const urlParams = new URLSearchParams();
         if (textToFilter) urlParams.append("text", textToFilter);
@@ -79,7 +79,7 @@ export function useSearch() {
         const queryParams = urlParams.toString();
 
         const response = await fetch(
-          `https://jscamp-api.vercel.apsp/api/jobs?${queryParams}`,
+          `https://jscamp-api.vercel.app/api/jobs?${queryParams}`,
         );
 
         if (!response.ok) {
@@ -109,33 +109,33 @@ export function useSearch() {
 
   const totalPages = Math.ceil(totalJobs / RESULTS_PER_PAGE);
 
-  // const updateURL = (textToFilter, filters) => {
-  //   const params = new URLSearchParams();
+  const updateURL = (textToFilter, filters) => {
+    const params = new URLSearchParams();
 
-  //   if (textToFilter) {
-  //     params.set("text", textToFilter);
-  //   }
+    if (textToFilter) {
+      params.set("text", textToFilter);
+    }
 
-  //   if (filters.technology) {
-  //     params.set("technology", filters.technology);
-  //   }
+    if (filters.technology) {
+      params.set("technology", filters.technology);
+    }
 
-  //   if (filters.location) {
-  //     params.set("location", filters.location);
-  //   }
+    if (filters.location) {
+      params.set("location", filters.location);
+    }
 
-  //   if (filters.experience) {
-  //     params.set("experience", filters.experience);
-  //   }
+    if (filters.experience) {
+      params.set("experience", filters.experience);
+    }
 
-  //   const paramsString = params.toString();
+    const paramsString = params.toString();
 
-  //   const newUrl = paramsString
-  //     ? `${window.location.pathname}?${paramsString}`
-  //     : window.location.pathname;
+    const newUrl = paramsString
+      ? `${window.location.pathname}?${paramsString}`
+      : window.location.pathname;
 
-  //   window.history.replaceState({}, "", newUrl);
-  // };
+    window.history.replaceState({}, "", newUrl);
+  };
 
   const handlePageChange = (page) => {
     setcurrentPage(page);
@@ -144,13 +144,13 @@ export function useSearch() {
   const handleSearch = (filters) => {
     setFilters(filters);
     setcurrentPage(1);
-    // updateURL(textToFilter, filters);
+    updateURL(textToFilter, filters);
   };
 
   const handleTextFilter = (newTextToFilter) => {
     setTextToFilter(newTextToFilter);
     setcurrentPage(1);
-    // updateURL(newTextToFilter, filters);
+    updateURL(newTextToFilter, filters);
   };
 
   const handleReset = () => {
@@ -163,6 +163,11 @@ export function useSearch() {
     setcurrentPage(1);
     localStorage.removeItem("filterJobs");
     localStorage.removeItem("textStorage");
+    updateURL("", {
+      technology: "",
+      experience: "",
+      location: "",
+    });
   };
 
   const hasActiveFilters = () => {
