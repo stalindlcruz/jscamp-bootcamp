@@ -63,7 +63,7 @@ export function useSearch() {
         setLoading(true);
 
         // delay 5 seconds
-        await new Promise((resolve) => setTimeout(resolve, 5000));
+        // await new Promise((resolve) => setTimeout(resolve, 5000));
 
         const urlParams = new URLSearchParams();
         if (textToFilter) urlParams.append("text", textToFilter);
@@ -79,7 +79,7 @@ export function useSearch() {
         const queryParams = urlParams.toString();
 
         const response = await fetch(
-          `https://jscamp-api.vercel.app/api/jobs?${queryParams}`,
+          `https://jscamp-api.vercel.apsp/api/jobs?${queryParams}`,
         );
 
         if (!response.ok) {

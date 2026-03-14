@@ -1,0 +1,46 @@
+.errorDiv {
+  background-color: #5b5b5b25;
+  border-radius: 20rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-block: 2rem !important;
+}
+
+.errorDiv p {
+  color: #fff;
+  font-size: 1.5rem;
+  /* font-weight: bold; */
+  text-align: center;
+  margin-top: 2rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.reloadButton {
+  background-color: #003659;
+  color: #fff;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  transition: all 0.3s ease;
+}
+
+.reloadButton:hover {
+  background-color: #004773;
+  transform: scale(1.1);
+  transition: all 0.3s ease;
+  outline: 2px solid #fff;
+}
+
+.reloadButton:active {
+  transform: scale(0.9);
+  transition: all 0.3s ease;
+  outline: none;
+}

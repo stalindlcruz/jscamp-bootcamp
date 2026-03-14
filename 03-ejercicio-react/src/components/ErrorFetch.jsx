@@ -1,12 +1,16 @@
+import styles from "./ErrorFetch.module.css";
+
 export function ErrorFetch({ error }) {
   const handleReload = () => {
     window.location.reload();
   };
 
   return (
-    <div style={{ textAlign: "center" }}>
+    <div className={styles.errorDiv}>
       <p>Error al cargar los trabajos: {error}</p>
-      <button onClick={handleReload}>Recargar</button>
+      <button className={styles.reloadButton} onClick={handleReload}>
+        Recargar
+      </button>
     </div>
   );
 }
