@@ -3,9 +3,6 @@ import { useState, useEffect } from "react";
 const RESULTS_PER_PAGE = 5;
 
 export function useSearch() {
-  // const urlParams = new URLSearchParams(window.location.search);
-  // const urlText = urlParams.get("text") || "";
-
   const [currentPage, setcurrentPage] = useState(1);
 
   const [filters, setFilters] = useState(() => {
@@ -61,9 +58,6 @@ export function useSearch() {
       try {
         setError(null);
         setLoading(true);
-
-        // delay 5 seconds
-        await new Promise((resolve) => setTimeout(resolve, 2000));
 
         const urlParams = new URLSearchParams();
         if (textToFilter) urlParams.append("text", textToFilter);

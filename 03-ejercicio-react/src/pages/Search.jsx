@@ -19,7 +19,11 @@ export function SearchPage() {
     error,
   } = useSearch();
 
-  const tittle = `Resultados ${totalJobs}, Páginas ${currentPage}`;
+  const tittle = loading
+    ? `Cargando...`
+    : error
+      ? `Error al cargar los empleos`
+      : `Resultados ${totalJobs}, Páginas ${currentPage}`;
 
   return (
     <>

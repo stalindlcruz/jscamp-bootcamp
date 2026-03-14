@@ -1,5 +1,7 @@
 import { useId } from "react";
 
+import styles from "./SearchForm.module.css";
+
 let timeoutId = null;
 
 export function SearchForm({
@@ -75,7 +77,11 @@ export function SearchForm({
           />
 
           {hasActiveFilters() && (
-            <button type="button" onClick={handleReset}>
+            <button
+              className={styles.resetButton}
+              type="button"
+              onClick={handleReset}
+            >
               Resetear
             </button>
           )}
