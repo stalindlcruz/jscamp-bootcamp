@@ -1,8 +1,7 @@
 import { useId } from "react";
+import { useForm } from "../hooks/useForm.jsx";
 
 import styles from "./SearchForm.module.css";
-
-let timeoutId = null;
 
 export function SearchForm({
   onSearch,
@@ -15,36 +14,15 @@ export function SearchForm({
   const idLocation = useId();
   const idExperience = useId();
 
-  const handleChange = (event) => {
-    event.preventDefault();
-
-    if (event.target.name === idText) {
-      const text = event.target.value;
-
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-
-      timeoutId = setTimeout(() => {
-        onTextFilter(text);
-      }, 500);
-    } else {
-      const formData = new FormData(event.currentTarget);
-
-      const filters = {
-        technology: formData.get(idTechnology),
-        location: formData.get(idLocation),
-        experience: formData.get(idExperience),
-      };
-
-      onSearch(filters);
-    }
-  };
-
-  const handleReset = () => {
-    document.querySelector("#empleos-search-form").reset();
-    onReset();
-  };
+  const { handleChange, handleReset } = useForm({
+    onSearch,
+    onTextFilter,
+    onReset,
+    idText,
+    idTechnology,
+    idLocation,
+    idExperience,
+  });
 
   return (
     <section className="jobs-search">
