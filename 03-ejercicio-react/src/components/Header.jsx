@@ -23,6 +23,7 @@ export function Header() {
 
       <nav>
         <Link href="/search">Empleos</Link>
+        <Link href="/contact">Contactanos</Link>
       </nav>
     </header>
   );

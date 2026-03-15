@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 import { HomePage } from "../pages/Home";
 import { SearchPage } from "../pages/Search";
+import { ContactPage } from "../pages/Contact";
 
 export function useRouter() {
   const [currentPathname, setCurrentPathname] = useState(
@@ -28,6 +29,7 @@ export function useRouter() {
   const routes = [
     { path: "/", component: HomePage },
     { path: "/search", component: SearchPage },
+    { path: "/contact", component: ContactPage },
   ];
 
   const route = routes.find((route) => route.path === currentPathname);
