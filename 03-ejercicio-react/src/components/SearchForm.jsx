@@ -1,4 +1,4 @@
-import { useId } from "react";
+import { useId, useState } from "react";
 import { useForm } from "../hooks/useForm.jsx";
 
 import styles from "./SearchForm.module.css";
@@ -9,6 +9,8 @@ export function SearchForm({
   onReset,
   hasActiveFilters,
 }) {
+  const [idKey, setIdKey] = useState(0);
+
   const idText = useId();
   const idTechnology = useId();
   const idLocation = useId();
@@ -29,7 +31,12 @@ export function SearchForm({
       <h1>Encuentra tu próximo trabajo</h1>
       <p>Explora miles de oportunidades en el sector tecnológico.</p>
 
-      <form onChange={handleChange} id="empleos-search-form" role="search">
+      <form
+        onChange={handleChange}
+        id="empleos-search-form"
+        role="search"
+        key={idKey}
+      >
         <div className="search-bar">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -58,7 +65,10 @@ export function SearchForm({
             <button
               className={styles.resetButton}
               type="button"
-              onClick={handleReset}
+              onClick={() => {
+                handleReset();
+                setIdKey((prev) => prev + 1);
+              }}
             >
               Resetear
             </button>
