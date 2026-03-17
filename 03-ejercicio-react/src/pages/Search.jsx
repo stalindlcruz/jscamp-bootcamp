@@ -17,6 +17,8 @@ export function SearchPage() {
     handleReset,
     hasActiveFilters,
     error,
+    textToFilter,
+    filters,
   } = useSearch();
 
   const tittle = loading
@@ -34,6 +36,8 @@ export function SearchPage() {
           onTextFilter={handleTextFilter}
           onReset={handleReset}
           hasActiveFilters={hasActiveFilters}
+          initialTextToFilters={textToFilter}
+          initialFilters={filters}
         />
         <SearchResults
           error={error}

@@ -8,6 +8,8 @@ export function SearchForm({
   onTextFilter,
   onReset,
   hasActiveFilters,
+  initialTextToFilters,
+  initialFilters,
 }) {
   const [idKey, setIdKey] = useState(0);
 
@@ -59,6 +61,7 @@ export function SearchForm({
             type="text"
             name={idText}
             placeholder="Buscar trabajos, empresas o habilidades"
+            defaultValue={initialTextToFilters}
           />
 
           {hasActiveFilters() && (
@@ -76,7 +79,11 @@ export function SearchForm({
         </div>
 
         <div className="search-filters">
-          <select name={idTechnology} id="filter-technology">
+          <select
+            name={idTechnology}
+            id="filter-technology"
+            defaultValue={initialFilters.technology}
+          >
             <option value="">Tecnología</option>
             <optgroup label="Tecnologías populares">
               <option value="javascript">JavaScript</option>
@@ -94,7 +101,11 @@ export function SearchForm({
             <option value="php">PHP</option>
           </select>
 
-          <select name={idLocation} id="filter-location">
+          <select
+            name={idLocation}
+            id="filter-location"
+            defaultValue={initialFilters.location}
+          >
             <option value="">Ubicación</option>
             <option value="remoto">Remoto</option>
             <option value="cdmx">Ciudad de México</option>
@@ -105,7 +116,11 @@ export function SearchForm({
             <option value="madrid">Madrid</option>
           </select>
 
-          <select name={idExperience} id="filter-experience-level">
+          <select
+            name={idExperience}
+            id="filter-experience-level"
+            defaultValue={initialFilters.experience}
+          >
             <option value="">Nivel de experiencia</option>
             <option value="junior">Junior</option>
             <option value="mid">Mid-level</option>

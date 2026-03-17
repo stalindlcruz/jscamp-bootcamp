@@ -1,11 +1,31 @@
 import { useState, useEffect } from "react";
+import { useRouter } from "./useRouter";
 
 const RESULTS_PER_PAGE = 5;
 
 export function useSearch() {
-  const [currentPage, setcurrentPage] = useState(1);
+  const { navigateTo } = useRouter();
+
+  const [currentPage, setcurrentPage] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    const pageParams = params.get("page");
+
+    if (!pageParams) {
+      return 1;
+    }
+
+    const page = Number(pageParams);
+
+    if (Number.isNaN(page) || page < 1) {
+      return 1;
+    }
+
+    return page;
+  });
 
   const [filters, setFilters] = useState(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+
     try {
       const savedFilters = localStorage.getItem("filterJobs");
 
@@ -17,16 +37,22 @@ export function useSearch() {
     }
 
     return {
-      technology: "",
-      experience: "",
-      location: "",
+      technology: urlParams.get("technology") || "",
+      experience: urlParams.get("level") || "",
+      location: urlParams.get("type") || "",
     };
   });
 
   const [textToFilter, setTextToFilter] = useState(() => {
     try {
+      const params = new URLSearchParams(window.location.search);
+      const urlText = params.get("text");
+
       const savedText = localStorage.getItem("textStorage");
-      if (savedText) {
+
+      if (urlText) {
+        return urlText;
+      } else if (savedText) {
         return JSON.parse(savedText);
       }
     } catch (error) {
@@ -103,24 +129,14 @@ export function useSearch() {
 
   const totalPages = Math.ceil(totalJobs / RESULTS_PER_PAGE);
 
-  const updateURL = (textToFilter, filters) => {
+  useEffect(() => {
     const params = new URLSearchParams();
 
-    if (textToFilter) {
-      params.set("text", textToFilter);
-    }
-
-    if (filters.technology) {
-      params.set("technology", filters.technology);
-    }
-
-    if (filters.location) {
-      params.set("location", filters.location);
-    }
-
-    if (filters.experience) {
-      params.set("experience", filters.experience);
-    }
+    if (textToFilter) params.append("text", textToFilter);
+    if (filters.technology) params.append("technology", filters.technology);
+    if (filters.location) params.append("type", filters.location);
+    if (filters.experience) params.append("level", filters.experience);
+    if (currentPage > 1) params.append("page", currentPage);
 
     const paramsString = params.toString();
 
@@ -128,8 +144,15 @@ export function useSearch() {
       ? `${window.location.pathname}?${paramsString}`
       : window.location.pathname;
 
-    window.history.replaceState({}, "", newUrl);
-  };
+    navigateTo(newUrl);
+  }, [
+    filters.technology,
+    filters.location,
+    filters.experience,
+    textToFilter,
+    currentPage,
+    navigateTo,
+  ]);
 
   const handlePageChange = (page) => {
     setcurrentPage(page);
@@ -138,13 +161,11 @@ export function useSearch() {
   const handleSearch = (filters) => {
     setFilters(filters);
     setcurrentPage(1);
-    updateURL(textToFilter, filters);
   };
 
   const handleTextFilter = (newTextToFilter) => {
     setTextToFilter(newTextToFilter);
     setcurrentPage(1);
-    updateURL(newTextToFilter, filters);
   };
 
   const handleReset = () => {
@@ -157,11 +178,6 @@ export function useSearch() {
     setcurrentPage(1);
     localStorage.removeItem("filterJobs");
     localStorage.removeItem("textStorage");
-    updateURL("", {
-      technology: "",
-      experience: "",
-      location: "",
-    });
   };
 
   const hasActiveFilters = () => {
@@ -184,5 +200,7 @@ export function useSearch() {
     handleReset,
     hasActiveFilters,
     error,
+    textToFilter,
+    filters,
   };
 }
