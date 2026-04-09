@@ -22,6 +22,9 @@ Mi pregunta sería la siguiente:
 
 Sería buena práctica recibir el event y prevenir su comportamiento por defecto aunque no este haciendo nada o simplemente no usarlo?
 
+**Respuesta:**
+Muy buena pregunta! En este caso no hace falta pasar el `event`. Los `event` son necesarios cuando el comportamiento por defecto realmente afecta lo que queremos hacer, como un submit de un formulario o una navegación de un link. En los botones, si dejar el `event` no afecta la experiencia del usuario, no es necesario usarlo.
+
 ## Quinta parte
 
 <!-- Dudas de la quinta parte del ejercicio -->
@@ -41,6 +44,31 @@ Mis preguntas serían las siguientes:
 1. No se si fue buena práctica crear un array de objetos donde paso la ruta y el componente en en mi hook useRouter en ves de pasarselos por props en App.jsx.
 
 2. Otra duda es que no se si fue buena práctica usar un .find() para encontrar el route que coincida con el currentPathname o es mejor usar un .filter() para encontrar el route que coincida con el currentPathname?
+
+**Respuesta:**
+Me llamó la atención como lo resolviste, y en el buen sentido :) Es una manera diferente de resolver la misma problemática.
+
+Lo que podes hacer en vez de usar un array y ejecutar un `.find()` es usar un `Map` o un `Object` para mapear las rutas con sus componentes, y luego simplemente acceder al componente por la ruta.
+
+Algo así:
+
+```javascript
+const routes = {
+  "/": Home,
+  "/about": About,
+  "/contact": Contact,
+};
+```
+
+Y luego en el hook useRouter:
+
+```javascript
+const currentRoute = routes[currentPathname] || NotFoundPage;
+```
+
+Esto evita que tengamos que ejecutar un `.find()`.
+
+Lo que evitaría es usar un `.filter()` porque eso haría un recorrido completo del array, y lo que queremos es encontrar el primer elemento que coincida con la ruta.
 
 ## Ejercicio extra
 
