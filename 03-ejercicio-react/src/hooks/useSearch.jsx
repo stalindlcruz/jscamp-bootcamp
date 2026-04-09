@@ -10,15 +10,12 @@ export function useSearch() {
     const params = new URLSearchParams(window.location.search);
     const pageParams = params.get("page");
 
-    if (!pageParams) {
-      return 1;
-    }
+    // Podemos simplificar esto haciendo un pageParams || 1
+    //if (!pageParams) return 1;
 
-    const page = Number(pageParams);
+    const page = Number(pageParams || 1);
 
-    if (Number.isNaN(page) || page < 1) {
-      return 1;
-    }
+    if (Number.isNaN(page) || page < 1) return 1;
 
     return page;
   });
@@ -50,11 +47,9 @@ export function useSearch() {
 
       const savedText = localStorage.getItem("textStorage");
 
-      if (urlText) {
-        return urlText;
-      } else if (savedText) {
-        return JSON.parse(savedText);
-      }
+      // No hace falta el else/if
+      if (urlText) return urlText;
+      if (savedText) return JSON.parse(savedText);
     } catch (error) {
       console.error("Error al recuperar el texto:", error);
     }
