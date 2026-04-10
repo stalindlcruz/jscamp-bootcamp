@@ -2,11 +2,11 @@ import { useRouter } from "../hooks/useRouter.jsx";
 import { NotFoundPage } from "../pages/404.jsx";
 
 export function Route() {
-  const { route } = useRouter();
+  const { route: Component } = useRouter();
 
-  if (route) {
-    return <route.component />;
-  }
+  // if (route) {
+  //   return <route.component />;
+  // }
 
-  return <NotFoundPage />;
+  return <Component />;
 }
