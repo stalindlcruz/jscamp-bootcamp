@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { Link } from "./Link";
+
+import styles from "./JobCard.module.css";
 
 export function JobCard({ job }) {
   const [isApplied, setIsApplied] = useState(false);
@@ -26,9 +29,20 @@ export function JobCard({ job }) {
         </small>
         <p>{job.descripcion}</p>
       </div>
-      <button className={buttonClasses} onClick={handleApplyClick}>
-        {buttonText}
-      </button>
+
+      <div className={styles.detailsBtn}>
+        <Link
+          to={`/jobs/${job.id}`}
+          className={styles.details}
+          aria-label={`Ver Detalles de ${job.titulo}`}
+        >
+          Detalles
+        </Link>
+
+        <button className={buttonClasses} onClick={handleApplyClick}>
+          {buttonText}
+        </button>
+      </div>
     </article>
   );
 }

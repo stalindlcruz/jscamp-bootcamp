@@ -5,7 +5,8 @@ import { Footer } from "./components/Footer.jsx";
 
 import { HomePage } from "./pages/Home.jsx";
 import { SearchPage } from "./pages/Search.jsx";
-// import { Route } from "./components/Route.jsx";
+
+import { DetailPage } from "./pages/Detail.jsx";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/search" element={<SearchPage />} />
+        <Route path="/jobs/:id" element={<DetailPage />} />
       </Routes>
       <Footer />
     </>
