@@ -23,7 +23,15 @@ export function JobCard({ job }) {
       data-technology={job.data.technology}
     >
       <div>
-        <h3>{job.titulo}</h3>
+        <h3>
+          <Link
+            to={`/jobs/${job.id}`}
+            className={styles.title}
+            aria-label={`Trabajo de ${job.titulo}`}
+          >
+            {job.titulo}
+          </Link>
+        </h3>
         <small>
           {job.empresa} | {job.ubicacion}
         </small>

@@ -1,15 +1,52 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import { Link } from "../components/Link.jsx";
+
+import styles from "./Detail.module.css";
+import snarkdown from "snarkdown";
 
 function DetailPageBreadCrumb({ job }) {
   return (
     <div>
-      <nav>
-        <Link>Empleos</Link>
+      <nav className={styles.navContainer}>
+        <Link className={styles.jobLink} to={"/search"}>
+          Empleos
+        </Link>
         <span>/</span>
-        <h2>{job.titulo}</h2>
+        <h3>{job.titulo}</h3>
       </nav>
+    </div>
+  );
+}
+
+function DetailPageHeader({ job }) {
+  return (
+    <header className={styles.detailHeader}>
+      <div className={styles.containerTitle}>
+        <h2>{job.titulo}</h2>
+        <p>
+          {job.empresa} • {job.ubicacion}
+        </p>
+      </div>
+
+      <div className={styles.containerBtns}>
+        <button>Aplicar ahora</button>
+        <button>❤️</button>
+      </div>
+    </header>
+  );
+}
+
+function JobSection({ title, content }) {
+  const htmlContent = snarkdown(content);
+
+  return (
+    <div>
+      <h2>{title}</h2>
+      <div
+        className={`prose`}
+        dangerouslySetInnerHTML={{ __html: htmlContent }}
+      />
     </div>
   );
 }
@@ -20,6 +57,8 @@ export function DetailPage() {
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch(`https://jscamp-api.vercel.app/api/jobs/${id}`)
@@ -38,14 +77,45 @@ export function DetailPage() {
       });
   }, [id]);
 
-  if (!job) {
-    return "Cragando empleo...";
+  if (loading) {
+    return (
+      <div>
+        <div>
+          <p>Cargando ofertas</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !job) {
+    return (
+      <div>
+        <div>
+          <h2>Oferta no encontrada</h2>
+          <p>
+            Puede que la oferta no exista o haya ocurrido un error al cargarla
+          </p>
+          <Link to={"/search"} className={""}>
+            Volver a la lista de empleos
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   return (
     <>
-      <main style={{ textAlign: "center" }}>
+      <main className={styles.container}>
         <DetailPageBreadCrumb job={job} />
+        <DetailPageHeader job={job} />
+
+        <JobSection title="Descripción" content={job.content.description} />
+        <JobSection
+          title="Descripción"
+          content={job.content.responsibilities}
+        />
+        <JobSection title="Descripción" content={job.content.requirements} />
+        <JobSection title="Descripción" content={job.content.about} />
       </main>
     </>
   );

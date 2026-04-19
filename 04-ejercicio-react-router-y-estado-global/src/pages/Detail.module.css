@@ -1,0 +1,23 @@
+.container {
+    padding-block: 2rem;
+}
+
+.detailHeader {
+    display: flex;
+    margin-top: 2rem;
+    
+    .containerTitle {
+        display: flex;
+        flex-direction: column;
+
+        h2 {
+            font-size: 1.5rem;
+        }
+    }
+
+    .containerBtns {
+        display: flex;
+        gap: 1rem;
+    }
+}
+

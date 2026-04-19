@@ -1,3 +1,13 @@
+.title {
+    text-decoration: none;
+    color: inherit;
+
+    &:hover {
+        color: #09f;
+        text-decoration: underline;
+    }
+}
+
 .detailsBtn {
     display: flex;
     flex-direction: column;
