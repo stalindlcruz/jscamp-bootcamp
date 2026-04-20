@@ -41,13 +41,13 @@ function JobSection({ title, content }) {
   const htmlContent = snarkdown(content);
 
   return (
-    <div>
+    <section className={styles.jobSection}>
       <h2>{title}</h2>
       <div
         className={`prose`}
         dangerouslySetInnerHTML={{ __html: htmlContent }}
       />
-    </div>
+    </section>
   );
 }
 
@@ -111,11 +111,11 @@ export function DetailPage() {
 
         <JobSection title="Descripción" content={job.content.description} />
         <JobSection
-          title="Descripción"
+          title="Responsabilidades"
           content={job.content.responsibilities}
         />
-        <JobSection title="Descripción" content={job.content.requirements} />
-        <JobSection title="Descripción" content={job.content.about} />
+        <JobSection title="Requisitos" content={job.content.requirements} />
+        <JobSection title="Acerca de la empresa" content={job.content.about} />
       </main>
     </>
   );
