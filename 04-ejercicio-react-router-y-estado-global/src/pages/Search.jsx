@@ -61,9 +61,7 @@ const useFilters = () => {
       } catch (error) {
         console.error("Error fetching jobs:", error);
       } finally {
-        setTimeout(() => {
-          setLoading(false);
-        }, 1000);
+        setLoading(false);
       }
     }
 

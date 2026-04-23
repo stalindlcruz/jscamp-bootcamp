@@ -75,9 +75,7 @@ export function DetailPage() {
         setError(error.message);
       })
       .finally(() => {
-        setTimeout(() => {
-          setLoading(false);
-        }, 2000);
+        setLoading(false);
       });
   }, [id]);
 
