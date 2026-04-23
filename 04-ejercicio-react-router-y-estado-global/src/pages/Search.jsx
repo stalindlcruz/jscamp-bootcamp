@@ -4,6 +4,7 @@ import { Pagination } from "../components/Pagination.jsx";
 import { SearchFormSection } from "../components/SearchFormSection.jsx";
 import { JobListings } from "../components/JobListings.jsx";
 import { useRouter } from "../hooks/useRouter.jsx";
+import { LoadingSpinner } from "../components/LoadingSpinner.jsx";
 
 const RESULTS_PER_PAGE = 4;
 
@@ -60,7 +61,9 @@ const useFilters = () => {
       } catch (error) {
         console.error("Error fetching jobs:", error);
       } finally {
-        setLoading(false);
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
       }
     }
 
@@ -148,12 +151,18 @@ export function SearchPage() {
       <section>
         <h2 style={{ textAlign: "center" }}>Resultados de búsqueda</h2>
 
-        {loading ? <p>Cargando empleos...</p> : <JobListings jobs={jobs} />}
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
+        {loading ? (
+          <LoadingSpinner text="Cargando empleos" />
+        ) : (
+          <JobListings jobs={jobs} />
+        )}
+        {!loading && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        )}
       </section>
     </main>
   );

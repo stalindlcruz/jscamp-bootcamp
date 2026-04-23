@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import { Link } from "../components/Link.jsx";
+import { LoadingSpinner } from "../components/LoadingSpinner.jsx";
 
 import styles from "./Detail.module.css";
 import snarkdown from "snarkdown";
@@ -73,23 +74,23 @@ export function DetailPage() {
         setError(error.message);
       })
       .finally(() => {
-        setLoading(false);
+        setTimeout(() => {
+          setLoading(false);
+        }, 2000);
       });
   }, [id]);
 
   if (loading) {
     return (
-      <div>
-        <div>
-          <p>Cargando ofertas</p>
-        </div>
-      </div>
+      <main>
+        <LoadingSpinner text="Cargando empleo" />
+      </main>
     );
   }
 
   if (error || !job) {
     return (
-      <div>
+      <main>
         <div>
           <h2>Oferta no encontrada</h2>
           <p>
@@ -99,7 +100,7 @@ export function DetailPage() {
             Volver a la lista de empleos
           </Link>
         </div>
-      </div>
+      </main>
     );
   }
 
