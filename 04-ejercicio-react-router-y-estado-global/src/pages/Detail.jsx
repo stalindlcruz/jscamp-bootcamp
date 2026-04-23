@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import { Link } from "../components/Link.jsx";
 import { LoadingSpinner } from "../components/LoadingSpinner.jsx";
+import { OfferNotFound } from "../components/OfferNotFound.jsx";
 
 import styles from "./Detail.module.css";
 import snarkdown from "snarkdown";
@@ -91,15 +92,7 @@ export function DetailPage() {
   if (error || !job) {
     return (
       <main>
-        <div>
-          <h2>Oferta no encontrada</h2>
-          <p>
-            Puede que la oferta no exista o haya ocurrido un error al cargarla
-          </p>
-          <Link to={"/search"} className={""}>
-            Volver a la lista de empleos
-          </Link>
-        </div>
+        <OfferNotFound message="Oferta no encontrada" />
       </main>
     );
   }
