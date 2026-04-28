@@ -1,85 +1,41 @@
-import { useId, useState, useRef } from 'react'
+import { useId, useState } from "react";
+import { useSearchForm } from "../hooks/useSearch.jsx";
 
-const useSearchForm = ({
-  idTechnology,
-  idLocation,
-  idExperienceLevel,
-  idText,
-  onSearch,
+export function SearchFormSection({
   onTextFilter,
-}) => {
-  const timeoutId = useRef(null)
-  const [searchText, setSearchText] = useState('')
+  onSearch,
+  initialText,
+  onReset,
+  initialFilters,
+}) {
+  const idText = useId();
+  const idTechnology = useId();
+  const idLocation = useId();
+  const idExperienceLevel = useId();
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
-
-    const formData = new FormData(event.currentTarget)
-
-    if (event.target.name === idText) {
-      return // ya lo manejamos en onChange
-    }
-
-    const filters = {
-      technology: formData.get(idTechnology),
-      location: formData.get(idLocation),
-      experienceLevel: formData.get(idExperienceLevel),
-    }
-
-    onSearch(filters)
-  }
-
-  const handleTextChange = (event) => {
-    const text = event.target.value
-    setSearchText(text) // actualizamos el input inmediatamente
-
-    // Debounce: Cancelar el timeout anterior
-    if (timeoutId.current) {
-      clearTimeout(timeoutId.current)
-    }
-
-    timeoutId.current = setTimeout(() => {
-      onTextFilter(text)
-    }, 500)
-  }
-
-  return {
-    searchText,
-    handleSubmit,
-    handleTextChange,
-  }
-}
-
-export function SearchFormSection({ onTextFilter, onSearch, initialText }) {
-  const idText = useId()
-  const idTechnology = useId()
-  const idLocation = useId()
-  const idExperienceLevel = useId()
-
-  const inputRef = useRef()
-
-  const { handleSubmit, handleTextChange } = useSearchForm({
+  const { handleChange, handleClearInput, inputRef } = useSearchForm({
     idTechnology,
     idLocation,
     idExperienceLevel,
     idText,
     onSearch,
     onTextFilter,
-  })
+    onReset,
+  });
 
-  const handleClearInput = (event) => {
-    event.preventDefault()
-
-    inputRef.current.value = ''
-    onTextFilter('')
-  }
+  const [idKey, setIdKey] = useState(0);
 
   return (
     <section className="jobs-search">
       <h1>Encuentra tu próximo trabajo</h1>
       <p>Explora miles de oportunidades en el sector tecnológico.</p>
 
-      <form onChange={handleSubmit} id="empleos-search-form" role="search">
+      <form
+        onChange={handleChange}
+        id="empleos-search-form"
+        role="search"
+        key={idKey}
+      >
         <div className="search-bar">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -104,15 +60,25 @@ export function SearchFormSection({ onTextFilter, onSearch, initialText }) {
             id="empleos-search-input"
             type="text"
             placeholder="Buscar trabajos, empresas o habilidades"
-            onChange={handleTextChange}
             defaultValue={initialText}
           />
 
-          <button onClick={handleClearInput}>✖︎</button>
+          <button
+            onClick={(event) => {
+              handleClearInput(event);
+              setIdKey((prev) => prev + 1);
+            }}
+          >
+            ✖︎
+          </button>
         </div>
 
         <div className="search-filters">
-          <select name={idTechnology} id="filter-technology">
+          <select
+            name={idTechnology}
+            id="filter-technology"
+            defaultValue={initialFilters.technology}
+          >
             <option value="">Tecnología</option>
             <optgroup label="Tecnologías populares">
               <option value="javascript">JavaScript</option>
@@ -130,7 +96,11 @@ export function SearchFormSection({ onTextFilter, onSearch, initialText }) {
             <option value="php">PHP</option>
           </select>
 
-          <select name={idLocation} id="filter-location">
+          <select
+            name={idLocation}
+            id="filter-location"
+            defaultValue={initialFilters.location}
+          >
             <option value="">Ubicación</option>
             <option value="remoto">Remoto</option>
             <option value="cdmx">Ciudad de México</option>
@@ -139,7 +109,11 @@ export function SearchFormSection({ onTextFilter, onSearch, initialText }) {
             <option value="barcelona">Barcelona</option>
           </select>
 
-          <select name={idExperienceLevel} id="filter-experience-level">
+          <select
+            name={idExperienceLevel}
+            id="filter-experience-level"
+            defaultValue={initialFilters.experienceLevel}
+          >
             <option value="">Nivel de experiencia</option>
             <option value="junior">Junior</option>
             <option value="mid">Mid-level</option>
@@ -151,5 +125,5 @@ export function SearchFormSection({ onTextFilter, onSearch, initialText }) {
 
       <span id="filter-selected-value"></span>
     </section>
-  )
+  );
 }
