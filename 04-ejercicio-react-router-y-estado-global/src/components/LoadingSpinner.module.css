@@ -17,6 +17,11 @@
   animation: spinner 1s linear infinite;
 }
 
+.loadingTittle {
+  font-size: 2rem;
+  color: inherit;
+}
+
 .loadingText {
   font-size: 1.5rem;
   color: #fff;

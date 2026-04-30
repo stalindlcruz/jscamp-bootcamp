@@ -53,7 +53,7 @@ function JobSection({ title, content }) {
   );
 }
 
-export function DetailPage() {
+export default function DetailPage() {
   const { id } = useParams();
 
   const [job, setJob] = useState(null);

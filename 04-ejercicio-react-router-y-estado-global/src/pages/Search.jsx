@@ -2,11 +2,11 @@ import { Pagination } from "../components/Pagination.jsx";
 import { SearchFormSection } from "../components/SearchFormSection.jsx";
 import { JobListings } from "../components/JobListings.jsx";
 import { useRouter } from "../hooks/useRouter.jsx";
-import { LoadingSpinner } from "../components/LoadingSpinner.jsx";
+import LoadingSpinner from "../components/LoadingSpinner.jsx";
 
 import { useFilters } from "../hooks/useFilters.jsx";
 
-export function SearchPage() {
+export default function SearchPage() {
   const {
     jobs,
     total,
