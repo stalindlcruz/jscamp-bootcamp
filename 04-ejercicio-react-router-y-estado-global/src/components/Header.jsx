@@ -1,6 +1,11 @@
+import { NavLink as NavLinkRouter } from "react-router";
 import { Link } from "./Link";
 
+import styles from "./Header.module.css";
+
 export function Header() {
+  const isActive = ({ isActive }) => (isActive ? styles.activeLink : "");
+
   return (
     <header>
       <Link href="/" style={{ textDecoration: "none" }}>
@@ -22,10 +27,17 @@ export function Header() {
       </Link>
 
       <nav>
-        <Link href="/search">Empleos</Link>
+        <NavLinkRouter to="/" className={isActive}>
+          Inicio
+        </NavLinkRouter>
+        <NavLinkRouter to="/search" className={isActive}>
+          Empleos
+        </NavLinkRouter>
 
         <a href="/search">Sin SPA</a>
       </nav>
+
+      <button>Iniciar Sesion</button>
     </header>
   );
 }

@@ -50,6 +50,7 @@ export function JobCard({ job }) {
         <button className={buttonClasses} onClick={handleApplyClick}>
           {buttonText}
         </button>
+        <button>❤️</button>
       </div>
     </article>
   );

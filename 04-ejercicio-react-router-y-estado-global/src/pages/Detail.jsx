@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import { Link } from "../components/Link.jsx";
-import { LoadingSpinner } from "../components/LoadingSpinner.jsx";
+import LoadingSpinner from "../components/LoadingSpinner.jsx";
 import { OfferNotFound } from "../components/OfferNotFound.jsx";
 
 import styles from "./Detail.module.css";
