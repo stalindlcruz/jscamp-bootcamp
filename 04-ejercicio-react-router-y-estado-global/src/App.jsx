@@ -8,6 +8,8 @@ const HomePage = lazy(() => import("./pages/Home.jsx"));
 const SearchPage = lazy(() => import("./pages/Search.jsx"));
 const DetailPage = lazy(() => import("./pages/Detail.jsx"));
 const LoadingSpinner = lazy(() => import("./components/LoadingSpinner.jsx"));
+const ContactPage = lazy(() => import("./pages/Contact.jsx"));
+const NotFoundPage = lazy(() => import("./pages/404.jsx"));
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/jobs/:id" element={<DetailPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>
       <Footer />

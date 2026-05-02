@@ -1,0 +1,6 @@
+.active {
+  color: var(--primary-light);
+  font-weight: 700;
+  border-bottom: 2px solid var(--primary-light);
+  transition: all 0.3s ease;
+}

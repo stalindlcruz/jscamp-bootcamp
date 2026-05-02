@@ -1,0 +1,10 @@
+.favBtn {
+    background: none;
+    background-color: #09f;
+    width: 6rem;
+    
+    &:hover {
+        outline: none;
+        border: none;
+    }
+}

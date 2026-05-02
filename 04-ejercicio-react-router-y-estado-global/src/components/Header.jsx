@@ -1,9 +1,15 @@
 import { NavLink as NavLinkRouter } from "react-router";
-import { Link } from "./Link";
-
+import { Link } from "./Link.jsx";
+import { useAuthStore } from "../store/authStore";
+import { useFavoriteStore } from "../store/favoriteStore";
 import styles from "./Header.module.css";
 
 export function Header() {
+  const { isLoggedIn, login, logout } = useAuthStore();
+  const { countFavorites } = useFavoriteStore();
+
+  const totalFavorites = countFavorites();
+
   const isActive = ({ isActive }) => (isActive ? styles.activeLink : "");
 
   return (
@@ -30,14 +36,28 @@ export function Header() {
         <NavLinkRouter to="/" className={isActive}>
           Inicio
         </NavLinkRouter>
+
         <NavLinkRouter to="/search" className={isActive}>
           Empleos
         </NavLinkRouter>
 
-        <a href="/search">Sin SPA</a>
+        <NavLinkRouter to="/contact" className={isActive}>
+          Contacto
+        </NavLinkRouter>
+
+        {isLoggedIn && (
+          <NavLinkRouter to="/profile" className={isActive}>
+            Perfil {totalFavorites > 0 ? "❤️" : "♡"}{" "}
+            {totalFavorites > 0 ? totalFavorites : ""}
+          </NavLinkRouter>
+        )}
       </nav>
 
-      <button>Iniciar Sesion</button>
+      {isLoggedIn ? (
+        <button onClick={logout}>Cerrar Sesion</button>
+      ) : (
+        <button onClick={login}>Iniciar Sesion</button>
+      )}
     </header>
   );
 }

@@ -1,0 +1,160 @@
+.contactMain {
+  margin-block: 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .contactDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    h1 {
+      color: #fff;
+      font-size: 2rem;
+    }
+
+    p {
+      color: #d6d6d6;
+      font-size: 1rem;
+    }
+  }
+}
+
+.form {
+  color: #d6d6d6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.formSearchBar {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 1.5rem;
+  margin: 1rem 0;
+  background: none;
+}
+
+.inputName {
+  width: 100%;
+  padding: 1rem;
+  outline: none;
+  background: none;
+  border: none;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.inputEmail {
+  width: 100%;
+  padding: 1rem;
+  outline: none;
+  background: none;
+  border: none;
+  color: #fff;
+}
+
+.textarea {
+  width: 100%;
+  padding: 2rem;
+  outline: none;
+  background: none;
+  border: 1px solid #ccc;
+  border-radius: 1.5rem;
+  margin: 1rem 0;
+  color: #fff;
+}
+
+.btn {
+  width: 50%;
+  padding: 1rem;
+  border: none;
+  border-radius: 1.5rem;
+  margin: 1rem;
+  background-color: #0a3d66;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #17466cb3;
+    border: none;
+    outline: none;
+    transition: all 0.5s ease;
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(1);
+    transition: all 0.5s ease;
+    background-color: #396589b3;
+  }
+}
+
+.NameError {
+  color: #ffffff;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.EmailError {
+  color: #ffffff;
+  font-size: 1rem;
+  white-space: nowrap;
+  margin-bottom: 1rem;
+}
+
+.MessageError {
+  color: #ffffff;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.successMessage {
+  color: #4ade80;
+  background-color: #16a34a1a;
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  text-align: center;
+  border: 1px solid #4ade80;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: scale(1);
+}
+
+/* Estilos para tablets */
+@media (max-width: 1024px) {
+  .contactMain {
+    margin-block: 3rem;
+  }
+}
+
+/* Estilos para moviles */
+@media (max-width: 768px) {
+  .contactMain {
+    margin-block: 0.5rem;
+    padding: 1rem;
+
+    .contactDiv {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+
+      .title {
+        font-size: 2rem;
+      }
+
+      .subtitle {
+        font-size: 1rem;
+      }
+    }
+  }
+}
