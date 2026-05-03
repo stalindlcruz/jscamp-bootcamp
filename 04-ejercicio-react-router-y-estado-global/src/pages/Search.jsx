@@ -15,15 +15,19 @@ export default function SearchPage() {
     currentPage,
     textToFilter,
     filters,
+    error,
     handlePageChange,
     handleSearch,
     handleTextFilter,
     handleReset,
+    hasActiveFilters,
   } = useFilters();
 
   const title = loading
-    ? `Cargando... - DevJobs`
-    : `Resultados: ${total}, Página ${currentPage} - DevJobs`;
+    ? "Cargando - DevJobs"
+    : error
+      ? "Error al cargar los trabajos"
+      : `Resultados: ${total}, Página ${currentPage} - DevJobs`;
 
   return (
     <main>
@@ -39,6 +43,7 @@ export default function SearchPage() {
         onSearch={handleSearch}
         onTextFilter={handleTextFilter}
         onReset={handleReset}
+        hasActiveFilters={hasActiveFilters}
       />
 
       <section>

@@ -1,41 +1,8 @@
 import { NavLink as NavLinkRouter } from "react-router";
+import { HeaderUserButton } from "./HeaderUserButton.jsx";
+import { HeaderFavoritesNavLink } from "./HeaderFavoritesNavLink.jsx";
 import { Link } from "./Link.jsx";
-import { useAuthStore } from "../store/authStore";
-import { useFavoriteStore } from "../store/favoriteStore";
 import styles from "./Header.module.css";
-
-function HeaderUserButton() {
-  const { isLoggedIn, login, logout } = useAuthStore();
-  const { clearFavorites } = useFavoriteStore();
-
-  function handleLogout() {
-    logout();
-    clearFavorites();
-  }
-
-  return isLoggedIn ? (
-    <button onClick={handleLogout}>Cerrar Sesion</button>
-  ) : (
-    <button onClick={login}>Iniciar Sesion</button>
-  );
-}
-
-function FavoritesNavLink() {
-  const isActive = ({ isActive }) => (isActive ? styles.activeLink : "");
-  const { isLoggedIn, login, logout } = useAuthStore();
-  const { countFavorites } = useFavoriteStore();
-
-  const totalFavorites = countFavorites();
-
-  return (
-    isLoggedIn && (
-      <NavLinkRouter to="/profile" className={isActive}>
-        Perfil {totalFavorites > 0 ? "❤️" : "♡"}{" "}
-        {totalFavorites > 0 ? totalFavorites : ""}
-      </NavLinkRouter>
-    )
-  );
-}
 
 export function Header() {
   const isActive = ({ isActive }) => (isActive ? styles.activeLink : "");
@@ -73,7 +40,7 @@ export function Header() {
           Contacto
         </NavLinkRouter>
 
-        <FavoritesNavLink />
+        <HeaderFavoritesNavLink />
       </nav>
 
       <HeaderUserButton />

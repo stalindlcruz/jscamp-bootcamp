@@ -7,6 +7,7 @@ export function SearchFormSection({
   initialText,
   onReset,
   initialFilters,
+  hasActiveFilters,
 }) {
   const idText = useId();
   const idTechnology = useId();
@@ -63,14 +64,16 @@ export function SearchFormSection({
             defaultValue={initialText}
           />
 
-          <button
-            onClick={(event) => {
-              handleClearInput(event);
-              setIdKey((prev) => prev + 1);
-            }}
-          >
-            ✖︎
-          </button>
+          {hasActiveFilters() && (
+            <button
+              onClick={(event) => {
+                handleClearInput(event);
+                setIdKey((prev) => prev + 1);
+              }}
+            >
+              ✖︎
+            </button>
+          )}
         </div>
 
         <div className="search-filters">

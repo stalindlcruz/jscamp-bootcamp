@@ -1,19 +1,7 @@
-import { useRouter } from "../hooks/useRouter";
+import { useHome } from "../hooks/useHome";
 
 export default function HomePage() {
-  const { navigateTo } = useRouter();
-
-  const handleSearch = (event) => {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    const searchTerm = formData.get("search");
-
-    const url = searchTerm
-      ? `/search?text=${encodeURIComponent(searchTerm)}`
-      : "/search";
-
-    navigateTo(url);
-  };
+  const { handleSearch } = useHome();
 
   return (
     <main>

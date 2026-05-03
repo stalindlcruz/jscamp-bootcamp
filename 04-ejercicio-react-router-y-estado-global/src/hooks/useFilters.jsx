@@ -43,6 +43,7 @@ export const useFilters = () => {
   const [jobs, setJobs] = useState([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     async function fetchJobs() {
@@ -70,6 +71,7 @@ export const useFilters = () => {
         setJobs(json.data);
         setTotal(json.total);
       } catch (error) {
+        setError(error.message);
         console.error("Error fetching jobs:", error);
       } finally {
         setLoading(false);
@@ -142,6 +144,13 @@ export const useFilters = () => {
     setCurrentPage(1);
   };
 
+  const hasActiveFilters = () => {
+    const hasTextFilter = textToFilter !== "";
+    const hasFilters = Object.values(filters).some((value) => value !== "");
+
+    return hasTextFilter || hasFilters;
+  };
+
   return {
     loading,
     jobs,
@@ -150,9 +159,11 @@ export const useFilters = () => {
     currentPage,
     textToFilter,
     filters,
+    error,
     handlePageChange,
     handleSearch,
     handleTextFilter,
     handleReset,
+    hasActiveFilters,
   };
 };

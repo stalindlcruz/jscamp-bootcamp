@@ -22,6 +22,7 @@ function App() {
       <Suspense
         fallback={
           <>
+            <title>Cargando página</title>
             <LoadingSpinner text="Cargando la página. por favor espere!" />
           </>
         }

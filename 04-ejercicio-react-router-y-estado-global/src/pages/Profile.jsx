@@ -1,8 +1,8 @@
-import { useAuthStore } from "../store/authStore";
+import { useLogout } from "../hooks/useLogout";
 import styles from "./Profile.module.css";
 
 export default function ProfilePage() {
-  const { logout } = useAuthStore();
+  const { handleLogout } = useLogout();
 
   return (
     <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "2rem 1rem" }}>
@@ -87,7 +87,7 @@ export default function ProfilePage() {
 
         <div className={styles.actions}>
           <button className={styles.editButton}>Editar Perfil</button>
-          <button className={styles.logoutButton} onClick={logout}>
+          <button className={styles.logoutButton} onClick={handleLogout}>
             Cerrar Sesión
           </button>
         </div>
