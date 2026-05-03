@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router";
 import { Link } from "../components/Link.jsx";
 import LoadingSpinner from "../components/LoadingSpinner.jsx";
 import { OfferNotFound } from "../components/OfferNotFound.jsx";
+import { useAuthStore } from "../store/authStore";
+import { useFavoriteStore } from "../store/favoriteStore";
 
 import styles from "./Detail.module.css";
 import snarkdown from "snarkdown";
@@ -21,6 +23,31 @@ function DetailPageBreadCrumb({ job }) {
   );
 }
 
+function DetailApplyBtn() {
+  const { isLoggedIn } = useAuthStore();
+
+  return (
+    <button disabled={!isLoggedIn}>
+      {isLoggedIn ? "Aplicar ahora" : "Inicia sesión para aplicar"}
+    </button>
+  );
+}
+
+function DetailFavoriteBtn({ jobId }) {
+  const { toggleFavorites, isFavorite } = useFavoriteStore();
+  const { isLoggedIn } = useAuthStore();
+
+  return (
+    <button
+      // className={""}
+      disabled={!isLoggedIn}
+      onClick={() => toggleFavorites(jobId)}
+    >
+      {isFavorite(jobId) ? "❤️" : "♡"}
+    </button>
+  );
+}
+
 function DetailPageHeader({ job }) {
   return (
     <header className={styles.detailHeader}>
@@ -32,8 +59,8 @@ function DetailPageHeader({ job }) {
       </div>
 
       <div className={styles.containerBtns}>
-        <button>Aplicar ahora</button>
-        <button>❤️</button>
+        <DetailApplyBtn />
+        <DetailFavoriteBtn jobId={job.id} />
       </div>
     </header>
   );

@@ -4,12 +4,40 @@ import { useAuthStore } from "../store/authStore";
 import { useFavoriteStore } from "../store/favoriteStore";
 import styles from "./Header.module.css";
 
-export function Header() {
+function HeaderUserButton() {
+  const { isLoggedIn, login, logout } = useAuthStore();
+  const { clearFavorites } = useFavoriteStore();
+
+  function handleLogout() {
+    logout();
+    clearFavorites();
+  }
+
+  return isLoggedIn ? (
+    <button onClick={handleLogout}>Cerrar Sesion</button>
+  ) : (
+    <button onClick={login}>Iniciar Sesion</button>
+  );
+}
+
+function FavoritesNavLink() {
+  const isActive = ({ isActive }) => (isActive ? styles.activeLink : "");
   const { isLoggedIn, login, logout } = useAuthStore();
   const { countFavorites } = useFavoriteStore();
 
   const totalFavorites = countFavorites();
 
+  return (
+    isLoggedIn && (
+      <NavLinkRouter to="/profile" className={isActive}>
+        Perfil {totalFavorites > 0 ? "❤️" : "♡"}{" "}
+        {totalFavorites > 0 ? totalFavorites : ""}
+      </NavLinkRouter>
+    )
+  );
+}
+
+export function Header() {
   const isActive = ({ isActive }) => (isActive ? styles.activeLink : "");
 
   return (
@@ -45,19 +73,10 @@ export function Header() {
           Contacto
         </NavLinkRouter>
 
-        {isLoggedIn && (
-          <NavLinkRouter to="/profile" className={isActive}>
-            Perfil {totalFavorites > 0 ? "❤️" : "♡"}{" "}
-            {totalFavorites > 0 ? totalFavorites : ""}
-          </NavLinkRouter>
-        )}
+        <FavoritesNavLink />
       </nav>
 
-      {isLoggedIn ? (
-        <button onClick={logout}>Cerrar Sesion</button>
-      ) : (
-        <button onClick={login}>Iniciar Sesion</button>
-      )}
+      <HeaderUserButton />
     </header>
   );
 }
