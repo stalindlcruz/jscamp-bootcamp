@@ -6,7 +6,8 @@ const RESULTS_PER_PAGE = 4;
 export const useFilters = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [filters, setFilters] = useState(() => {
+  // Muy bien! Mira, podemos simplificarlo mucho más
+  /* const [filters, setFilters] = useState(() => {
     const filters = {
       technology: "",
       location: "",
@@ -29,6 +30,13 @@ export const useFilters = () => {
     }
 
     return filters;
+  }); */
+
+  // Aquí hacemos lo mismo pero de una manera más simplificada y fácil de leer
+  const [filters, setFilters] = useState({
+    technology: searchParams.get("technology") || "",
+    location: searchParams.get("location") || "",
+    experienceLevel: searchParams.get("experienceLevel") || "",
   });
 
   const [textToFilter, setTextToFilter] = useState(
@@ -37,7 +45,9 @@ export const useFilters = () => {
 
   const [currentPage, setCurrentPage] = useState(() => {
     const page = Number(searchParams.get("page"));
-    return Number.isNaN(page) ? page : 1;
+    if (page < 1) return 1;
+    // Ojo que estaba mal implementado, si la página es NaN, debería ser 1, sino retornamos la página
+    return Number.isNaN(page) ? 1 : page;
   });
 
   const [jobs, setJobs] = useState([]);
@@ -74,6 +84,7 @@ export const useFilters = () => {
         setError(error.message);
         console.error("Error fetching jobs:", error);
       } finally {
+        // Muy bien aplicado el `finally` para el Loading
         setLoading(false);
       }
     }
@@ -85,6 +96,19 @@ export const useFilters = () => {
     // const params = new URLSearchParams();
 
     setSearchParams((params) => {
+      // Excelente! Para evitar tantos if/else, podemos hacer una función que simplifique esto (es una alternativa que te quiero mostrar, lo que hiciste está perfecto)
+
+      // Si ves lo comentado, queda mucho mas corto y claro
+
+      /* const handleSetParamIfExists = (key, value) => {
+        value ? params.set(key, value) : params.delete(key);
+      };
+
+      handleSetParamIfExists("text", textToFilter);
+      handleSetParamIfExists("technology", filters.technology);
+      handleSetParamIfExists("location", filters.location);
+      handleSetParamIfExists("experienceLevel", filters.experienceLevel); */
+
       if (textToFilter) {
         params.set("text", textToFilter);
       } else {
