@@ -3,7 +3,7 @@ import { useAuthStore } from "../store/authStore";
 import styles from "./FavoriteBtn.module.css";
 
 export function FavoriteBtn({ jobId }) {
-  const { toggleFavorites, totalFavorites, isFavorite } = useFavoriteStore();
+  const { toggleFavorites, isFavorite } = useFavoriteStore();
   const { isLoggedIn } = useAuthStore();
 
   return (

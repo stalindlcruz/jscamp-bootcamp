@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { useId } from "react";
 import { useSearchForm } from "../hooks/useSearch.jsx";
 
 export function SearchFormSection({
@@ -24,7 +24,7 @@ export function SearchFormSection({
     onReset,
   });
 
-  const [idKey, setIdKey] = useState(0);
+  // const [idKey, setIdKey] = useState(0);
 
   return (
     <section className="jobs-search">
@@ -35,7 +35,7 @@ export function SearchFormSection({
         onChange={handleChange}
         id="empleos-search-form"
         role="search"
-        key={idKey}
+        // key={idKey}
       >
         <div className="search-bar">
           <svg
@@ -68,7 +68,7 @@ export function SearchFormSection({
             <button
               onClick={(event) => {
                 handleClearInput(event);
-                setIdKey((prev) => prev + 1);
+                // setIdKey((prev) => prev + 1);
               }}
             >
               ✖︎
@@ -80,7 +80,8 @@ export function SearchFormSection({
           <select
             name={idTechnology}
             id="filter-technology"
-            defaultValue={initialFilters.technology}
+            // aquí debería ir `value`, es el valor que va a tomar React para poder controlar el select. `defaultValue` es el value que se utiliza en los inputs no controlados de HTML. Siempre usa `value` en React para controlar el select.
+            value={initialFilters.technology}
           >
             <option value="">Tecnología</option>
             <optgroup label="Tecnologías populares">
@@ -102,7 +103,7 @@ export function SearchFormSection({
           <select
             name={idLocation}
             id="filter-location"
-            defaultValue={initialFilters.location}
+            value={initialFilters.location}
           >
             <option value="">Ubicación</option>
             <option value="remoto">Remoto</option>
@@ -115,7 +116,7 @@ export function SearchFormSection({
           <select
             name={idExperienceLevel}
             id="filter-experience-level"
-            defaultValue={initialFilters.experienceLevel}
+            value={initialFilters.experienceLevel}
           >
             <option value="">Nivel de experiencia</option>
             <option value="junior">Junior</option>

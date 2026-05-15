@@ -1,6 +1,7 @@
 import { useHome } from "../hooks/useHome";
 
 export default function HomePage() {
+  /* Muy bien! Si luego la aplicación crece cambiaría el nombre del hook para no restringirlo solo a la Home. Lo que hace podría ser un comportamiento reutilizable */
   const { handleSearch } = useHome();
 
   return (
