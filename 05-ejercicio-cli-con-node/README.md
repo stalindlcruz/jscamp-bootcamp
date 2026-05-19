@@ -20,8 +20,8 @@ En este ejercicio vas a crear un script que liste archivos y carpetas para que:
 Partimos del siguiente script en `./cli.js` con las importaciones requeridas:
 
 ```js
-import { readdir, stat } from 'node:fs/promises'
-import { join } from 'node:path'
+import { readdir, stat } from "node:fs/promises";
+import { join } from "node:path";
 ```
 
 ---
