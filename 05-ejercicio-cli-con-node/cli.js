@@ -2,7 +2,10 @@ import { readdir, stat } from "node:fs/promises";
 import { join } from "node:path";
 
 // Aquí irá el código
-const dir = process.argv[2] ?? ".";
+const args = process.argv.slice(2);
+const asc = args.includes("--asc");
+const desc = args.includes("--desc");
+const dir = args.find((arg) => !arg.startsWith("--")) ?? ".";
 
 const formatBytes = (size) => {
   if (size < 1024) return `${size} Bytes`;
@@ -23,6 +26,12 @@ const fileInfo = await Promise.all(
     };
   }),
 );
+
+fileInfo.sort((a, b) => {
+  if (asc) return a.name.localeCompare(b.name);
+  if (desc) return b.name.localeCompare(a.name);
+  return 0;
+});
 
 for (const file of fileInfo) {
   const icon = file.isDir ? "📁" : "📄";
