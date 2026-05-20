@@ -5,6 +5,8 @@ import { join } from "node:path";
 const args = process.argv.slice(2);
 const asc = args.includes("--asc");
 const desc = args.includes("--desc");
+const onlyFiles = args.includes("--files");
+const onlyFolders = args.includes("--folders");
 const dir = args.find((arg) => !arg.startsWith("--")) ?? ".";
 
 const formatBytes = (size) => {
@@ -14,7 +16,7 @@ const formatBytes = (size) => {
 
 const files = await readdir(dir);
 
-const fileInfo = await Promise.all(
+const filesInfo = await Promise.all(
   files.map(async (name) => {
     const fullPath = join(dir, name);
     const info = await stat(fullPath);
@@ -27,13 +29,22 @@ const fileInfo = await Promise.all(
   }),
 );
 
-fileInfo.sort((a, b) => {
+// Aqui tengo las carpetas ordenada de primero intencional
+filesInfo.sort((a, b) => {
+  if (a.isDir && !b.isDir) return -1;
+  if (!a.isDir && b.isDir) return 1;
   if (asc) return a.name.localeCompare(b.name);
   if (desc) return b.name.localeCompare(a.name);
   return 0;
 });
 
-for (const file of fileInfo) {
+const filteredInfo = filesInfo.filter((info) => {
+  if (onlyFiles) return !info.isDir;
+  if (onlyFolders) return info.isDir;
+  return true;
+});
+
+for (const file of filteredInfo) {
   const icon = file.isDir ? "📁" : "📄";
   const size = file.isDir ? `-` : `${file.size}`;
 
