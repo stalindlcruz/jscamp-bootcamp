@@ -7,12 +7,22 @@ const asc = args.includes("--asc");
 const desc = args.includes("--desc");
 const onlyFiles = args.includes("--files");
 const onlyFolders = args.includes("--folders");
-const dir = args.find((arg) => !arg.startsWith("--")) ?? ".";
+const dir = args.find((arg) => !arg.startsWith("--")) ?? "./";
 
 const formatBytes = (size) => {
   if (size < 1024) return `${size} Bytes`;
   return `${(size / 1024).toFixed(2)} KB`;
 };
+
+if (!process.permission.has("fs.read", `${dir}`)) {
+  console.error(`
+    Error: No tienes permiso para leer el directorio "${dir}"
+
+    Para habilitar los permisos, ejecuta:
+    node --permission --allow-fs-read=${dir} cli.js
+    `);
+  process.exit(1);
+}
 
 const files = await readdir(dir);
 
@@ -48,5 +58,11 @@ for (const file of filteredInfo) {
   const icon = file.isDir ? "📁" : "📄";
   const size = file.isDir ? `-` : `${file.size}`;
 
-  console.log(`${icon.padEnd(2)} ${file.name.padEnd(15)} ${size.padStart(5)}`);
+  const nameColor = file.isDir ? "\x1b[34m" : "\x1b[32m";
+  const sizeColor = "\x1b[33m";
+  const resetColor = "\x1b[0m";
+
+  console.log(
+    `${icon.padEnd(2)} ${nameColor}${file.name.padEnd(15)}${resetColor} ${sizeColor}${size.padStart(5)}${resetColor}`,
+  );
 }
