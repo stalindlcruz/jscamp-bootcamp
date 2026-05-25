@@ -14,7 +14,6 @@ const formatBytes = (size) => {
   return `${(size / 1024).toFixed(2)} KB`;
 };
 
-
 // Si el usuario no pone `--permission` en la ejecución, saltará un error distinto, porque querrá acceder a `process.permission` y no existirá. Así que usaremos un operador de nulish coalescing para evitar el error.
 if (!process.permission?.has("fs.read", `${dir}`)) {
   console.error(`
@@ -27,10 +26,10 @@ if (!process.permission?.has("fs.read", `${dir}`)) {
 }
 
 // Si queremos acceder a un directorio que no existe, podemos capturar el error y avisarle al usuario
-let files
+let files;
 try {
   files = await readdir(dir);
-} catch(err) {
+} catch (err) {
   console.error(`Error: No se pudo leer el directorio "${dir}"`);
   process.exit(1);
 }
