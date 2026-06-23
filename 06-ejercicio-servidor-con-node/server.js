@@ -2,72 +2,6 @@ import { createServer } from "node:http";
 import { randomUUID } from "node:crypto";
 import { json } from "node:stream/consumers";
 
-process.loadEnvFile();
-
-const port = process.env.PORT || 3000;
-
-function sendJson(res, statusCode, data) {
-  res.setHeader("Content-Type", "application/json; charset=utf-8");
-  res.statusCode = statusCode;
-  res.end(JSON.stringify(data));
-}
-
-const server = createServer(async (req, res) => {
-  // TODO: Aquí irá la lógica del servidor
-  const ROUTE_NOT_FOUND = { error: "Ruta no encontrada" };
-
-  const { method, url } = req;
-
-  if (method === "GET") {
-    if (url === "/users") {
-      return sendJson(res, 200, users);
-    }
-
-    if (url === "/health") {
-      const healthInfo = {
-        status: "ok",
-        uptime: `${Math.floor(process.uptime() / 60)} minutes ${Math.floor(process.uptime() % 60)} seconds`,
-      };
-
-      return sendJson(res, 200, healthInfo);
-    }
-  }
-
-  if (method == "POST") {
-    if (url === "/users") {
-      try {
-        const body = await json(req);
-
-        if (!body.name || !body.age) {
-          return sendJson(res, 400, { error: "name and age are required" });
-        }
-
-        console.log(body);
-
-        const newUser = {
-          id: randomUUID(),
-          name: body.name,
-          age: body.age,
-        };
-
-        users.push(newUser);
-
-        return sendJson(res, 201, newUser);
-      } catch (error) {
-        console.error("Error processing POST request:", error);
-        return sendJson(res, 500, { error: "Internal server error" });
-      }
-    }
-  }
-
-  return sendJson(res, 404, ROUTE_NOT_FOUND);
-});
-
-server.listen(port, () => {
-  const address = server.address();
-  console.log(`Servidor escuchando en http://localhost:${address.port}`);
-});
-
 const users = [
   {
     id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
@@ -120,3 +54,72 @@ const users = [
     age: 30,
   },
 ];
+
+process.loadEnvFile();
+
+const port = process.env.PORT || 3000;
+
+function sendJson(res, statusCode, data) {
+  res.setHeader("Content-Type", "application/json; charset=utf-8");
+  res.statusCode = statusCode;
+  res.end(JSON.stringify(data));
+}
+
+const server = createServer(async (req, res) => {
+  // TODO: Aquí irá la lógica del servidor
+  const ROUTE_NOT_FOUND = { error: "Ruta no encontrada" };
+
+  const { method, url } = req;
+
+  const currentUrl = new URL(url, `http://localhost:${port}`);
+  const pathName = currentUrl.pathname;
+
+  if (method === "GET") {
+    if (pathName === "/users") {
+      return sendJson(res, 200, users);
+    }
+
+    if (pathName === "/health") {
+      const healthInfo = {
+        status: "ok",
+        uptime: `${Math.floor(process.uptime() / 60)} minutes ${Math.floor(process.uptime() % 60)} seconds`,
+      };
+
+      return sendJson(res, 200, healthInfo);
+    }
+  }
+
+  if (method == "POST") {
+    if (pathName === "/users") {
+      try {
+        const body = await json(req);
+
+        if (!body.name || !body.age) {
+          return sendJson(res, 400, { error: "name and age are required" });
+        }
+
+        console.log(body);
+
+        const newUser = {
+          id: randomUUID(),
+          name: body.name,
+          age: body.age,
+        };
+
+        users.push(newUser);
+
+        return sendJson(res, 201, newUser);
+      } catch (error) {
+        console.error("Error processing POST request:", error);
+        return sendJson(res, 500, { error: "Internal server error" });
+      }
+    }
+  }
+
+  return sendJson(res, 404, ROUTE_NOT_FOUND);
+});
+
+server.listen(port, () => {
+  const address = server.address();
+  console.log(`Servidor escuchando en http://localhost:${address.port}`);
+});
