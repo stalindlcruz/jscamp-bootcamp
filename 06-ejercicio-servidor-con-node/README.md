@@ -11,20 +11,20 @@ En este ejercicio vas a crear una API completa, simulando la gestión de usuario
 En el archivo `server.js` vas a encontrar este código:
 
 ```js
-import { createServer } from 'node:http'
+import { createServer } from "node:http";
 
-process.loadEnvFile()
+process.loadEnvFile();
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3000;
 
 const server = createServer((req, res) => {
   // TODO: Aquí irá la lógica del servidor
-})
+});
 
 server.listen(port, () => {
-  const address = server.address()
-  console.log(`Servidor escuchando en http://localhost:${address.port}`)
-})
+  const address = server.address();
+  console.log(`Servidor escuchando en http://localhost:${address.port}`);
+});
 ```
 
 También vas a encontrar un array de usuarios que van a servir como base de datos.
