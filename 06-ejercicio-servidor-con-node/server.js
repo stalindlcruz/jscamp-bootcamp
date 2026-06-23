@@ -1,7 +1,6 @@
 import { createServer } from "node:http";
 import { randomUUID } from "node:crypto";
 import { json } from "node:stream/consumers";
-import { uptime } from "node:process";
 
 process.loadEnvFile();
 
@@ -15,6 +14,7 @@ function sendJson(res, statusCode, data) {
 
 const server = createServer(async (req, res) => {
   // TODO: Aquí irá la lógica del servidor
+  const ROUTE_NOT_FOUND = { error: "Ruta no encontrada" };
 
   const { method, url } = req;
 
@@ -59,6 +59,8 @@ const server = createServer(async (req, res) => {
       }
     }
   }
+
+  return sendJson(res, 404, ROUTE_NOT_FOUND);
 });
 
 server.listen(port, () => {
