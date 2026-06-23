@@ -1,4 +1,6 @@
 import { createServer } from "node:http";
+import { randomUUID } from "node:crypto";
+import { json } from "node:stream/consumers";
 
 process.loadEnvFile();
 
@@ -10,7 +12,7 @@ function sendJson(res, statusCode, data) {
   res.end(JSON.stringify(data));
 }
 
-const server = createServer((req, res) => {
+const server = createServer(async (req, res) => {
   // TODO: Aquí irá la lógica del servidor
 
   const { method, url } = req;
@@ -18,6 +20,33 @@ const server = createServer((req, res) => {
   if (method === "GET") {
     if (url === "/users") {
       return sendJson(res, 200, users);
+    }
+  }
+
+  if (method == "POST") {
+    if (url === "/users") {
+      try {
+        const body = await json(req);
+
+        if (!body.name || !body.age) {
+          return sendJson(res, 400, { error: "name and age are required" });
+        }
+
+        console.log(body);
+
+        const newUser = {
+          id: randomUUID(),
+          name: body.name,
+          age: body.age,
+        };
+
+        users.push(newUser);
+
+        return sendJson(res, 201, newUser);
+      } catch (error) {
+        console.error("Error processing POST request:", error);
+        return sendJson(res, 500, { error: "Internal server error" });
+      }
     }
   }
 });
