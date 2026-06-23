@@ -1,6 +1,7 @@
 import { createServer } from "node:http";
 import { randomUUID } from "node:crypto";
 import { json } from "node:stream/consumers";
+import { uptime } from "node:process";
 
 process.loadEnvFile();
 
@@ -20,6 +21,15 @@ const server = createServer(async (req, res) => {
   if (method === "GET") {
     if (url === "/users") {
       return sendJson(res, 200, users);
+    }
+
+    if (url === "/health") {
+      const healthInfo = {
+        status: "ok",
+        uptime: `${Math.floor(process.uptime() / 60)} minutes ${Math.floor(process.uptime() % 60)} seconds`,
+      };
+
+      return sendJson(res, 200, healthInfo);
     }
   }
 
