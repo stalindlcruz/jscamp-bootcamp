@@ -76,7 +76,23 @@ const server = createServer(async (req, res) => {
 
   if (method === "GET") {
     if (pathName === "/users") {
-      return sendJson(res, 200, users);
+      const name = currentUrl.searchParams.get("name");
+      const limit = Number(currentUrl.searchParams.get("limit"));
+      const offset = Number(currentUrl.searchParams.get("offset"));
+
+      // Filter by name
+      const filteredUsers = name
+        ? users.filter((user) =>
+            user.name.toLowerCase().includes(name.toLowerCase()),
+          )
+        : users;
+
+      // Filter by limit and offset
+      const paginatedUser = limit
+        ? filteredUsers.slice(offset, offset + limit)
+        : filteredUsers;
+
+      return sendJson(res, 200, paginatedUser);
     }
 
     if (pathName === "/health") {
