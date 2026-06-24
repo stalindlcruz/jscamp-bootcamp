@@ -77,6 +77,10 @@ const server = createServer(async (req, res) => {
   if (method === "GET") {
     if (pathName === "/users") {
       const name = currentUrl.searchParams.get("name");
+
+      const minAge = Number(currentUrl.searchParams.get("minAge"));
+      const maxAge = Number(currentUrl.searchParams.get("maxAge"));
+
       const limit = Number(currentUrl.searchParams.get("limit"));
       const offset = Number(currentUrl.searchParams.get("offset"));
 
@@ -87,10 +91,21 @@ const server = createServer(async (req, res) => {
           )
         : users;
 
+      // Filter by age
+      const filteredByAge =
+        minAge || maxAge
+          ? filteredUsers.filter((user) => {
+              return (
+                (!minAge || user.age >= minAge) &&
+                (!maxAge || user.age <= maxAge)
+              );
+            })
+          : filteredUsers;
+
       // Filter by limit and offset
       const paginatedUser = limit
-        ? filteredUsers.slice(offset, offset + limit)
-        : filteredUsers;
+        ? filteredByAge.slice(offset, offset + limit)
+        : filteredByAge;
 
       return sendJson(res, 200, paginatedUser);
     }
