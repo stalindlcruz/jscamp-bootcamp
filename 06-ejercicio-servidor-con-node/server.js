@@ -67,22 +67,33 @@ function sendJson(res, statusCode, data) {
 
 const server = createServer(async (req, res) => {
   // TODO: Aquí irá la lógica del servidor
+  const { method, url } = req;
+  const { pathname, searchParams } = new URL(url, `http://${req.headers.host}`);
+
   const ROUTE_NOT_FOUND = { error: "Ruta no encontrada" };
 
-  const { method, url } = req;
-
-  const currentUrl = new URL(url, `http://localhost:${port}`);
-  const pathName = currentUrl.pathname;
+  const MUST_BE_NUMBER = {
+    error: "limit y offset deberia ser un número valido",
+  };
 
   if (method === "GET") {
-    if (pathName === "/users") {
-      const name = currentUrl.searchParams.get("name");
+    if (pathname === "/users") {
+      if (
+        Number.isNaN(Number(searchParams.get("minAge"))) ||
+        Number.isNaN(Number(searchParams.get("maxAge"))) ||
+        Number.isNaN(Number(searchParams.get("limit"))) ||
+        Number.isNaN(Number(searchParams.get("offset")))
+      ) {
+        return sendJson(res, 400, MUST_BE_NUMBER);
+      }
 
-      const minAge = Number(currentUrl.searchParams.get("minAge"));
-      const maxAge = Number(currentUrl.searchParams.get("maxAge"));
+      const name = searchParams.get("name");
 
-      const limit = Number(currentUrl.searchParams.get("limit"));
-      const offset = Number(currentUrl.searchParams.get("offset"));
+      const minAge = Number(searchParams.get("minAge"));
+      const maxAge = Number(searchParams.get("maxAge"));
+
+      const limit = Number(searchParams.get("limit")) || users.length;
+      const offset = Number(searchParams.get("offset"));
 
       // Filter by name
       const filteredUsers = name
@@ -110,7 +121,7 @@ const server = createServer(async (req, res) => {
       return sendJson(res, 200, paginatedUser);
     }
 
-    if (pathName === "/health") {
+    if (pathname === "/health") {
       const healthInfo = {
         status: "ok",
         uptime: `${Math.floor(process.uptime() / 60)} minutes ${Math.floor(process.uptime() % 60)} seconds`,
@@ -121,15 +132,13 @@ const server = createServer(async (req, res) => {
   }
 
   if (method == "POST") {
-    if (pathName === "/users") {
+    if (pathname === "/users") {
       try {
         const body = await json(req);
 
         if (!body.name || !body.age) {
           return sendJson(res, 400, { error: "name and age are required" });
         }
-
-        console.log(body);
 
         const newUser = {
           id: randomUUID(),
