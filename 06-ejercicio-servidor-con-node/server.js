@@ -1,5 +1,5 @@
-import { createServer } from "node:http";
 import { randomUUID } from "node:crypto";
+import { createServer } from "node:http";
 import { json } from "node:stream/consumers";
 
 const users = [
@@ -78,22 +78,23 @@ const server = createServer(async (req, res) => {
 
   if (method === "GET") {
     if (pathname === "/users") {
-      if (
-        Number.isNaN(Number(searchParams.get("minAge"))) ||
-        Number.isNaN(Number(searchParams.get("maxAge"))) ||
-        Number.isNaN(Number(searchParams.get("limit"))) ||
-        Number.isNaN(Number(searchParams.get("offset")))
-      ) {
-        return sendJson(res, 400, MUST_BE_NUMBER);
-      }
-
-      const name = searchParams.get("name");
-
+      /* Podemos simplificar esto para no escribirlo dos veces */
       const minAge = Number(searchParams.get("minAge"));
       const maxAge = Number(searchParams.get("maxAge"));
 
       const limit = Number(searchParams.get("limit")) || users.length;
       const offset = Number(searchParams.get("offset"));
+
+      const name = searchParams.get("name");
+
+      if (
+        Number.isNaN(minAge) ||
+        Number.isNaN(maxAge) ||
+        Number.isNaN(limit) ||
+        Number.isNaN(offset)
+      ) {
+        return sendJson(res, 400, MUST_BE_NUMBER);
+      }
 
       // Filter by name
       const filteredUsers = name
