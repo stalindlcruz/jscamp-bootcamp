@@ -30,17 +30,17 @@ Tu proyecto ya tiene esta estructura:
 En el archivo `app.js` encontrarás este código:
 
 ```js
-import express from 'express'
-import { jobsRouter } from './routes/jobs.js'
+import express from "express";
+import { jobsRouter } from "./routes/jobs.js";
 
-const PORT = 3000
-const app = express()
+const PORT = 3000;
+const app = express();
 
-app.use('/jobs', jobsRouter)
+app.use("/jobs", jobsRouter);
 
 app.listen(PORT, () => {
-  console.log(`Servidor levantado en http://localhost:${PORT}`)
-})
+  console.log(`Servidor levantado en http://localhost:${PORT}`);
+});
 ```
 
 También tienes el archivo `jobs.json` que te mencionamos anteriormente con datos de trabajos que servirá como base de datos.
@@ -97,7 +97,7 @@ export const DEFAULTS = {
   LIMIT_PAGINATION: 10,
   LIMIT_OFFSET: 0,
   PORT: 1234,
-}
+};
 ```
 
 Esto servirá para que puedas usar los valores por defecto en los controladores y en el punto de entrada de la aplicación.

@@ -1,4 +1,10 @@
-import jobs from '../jobs.json' with { type: 'json' }
+import jobs from "../jobs.json" with { type: "json" };
 
 /* Aquí deberá ir la lógica de tu modelo */
 /* Recuerda que el modelo SOLO debe manejar la lógica de los datos, en este caso nuestro JSON */
+
+export class JobModel {
+  static async getAll({ title, text, technology, limit, offset }) {
+    let filteredJob = jobs;
+  }
+}
