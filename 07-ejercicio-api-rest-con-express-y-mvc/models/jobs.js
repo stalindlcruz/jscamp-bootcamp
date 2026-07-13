@@ -5,6 +5,47 @@ import jobs from "../jobs.json" with { type: "json" };
 
 export class JobModel {
   static async getAll({ title, text, technology, limit, offset }) {
-    let filteredJob = jobs;
+    let filteredJobs = jobs;
+
+    if (title) {
+      const valueTitle = title.toLowerCase();
+
+      filteredJobs = filteredJobs.filter((job) =>
+        job.titulo.toLowerCase().includes(valueTitle),
+      );
+    }
+
+    if (text) {
+      const searchText = text.toLowerCase();
+
+      filteredJobs = filteredJobs.filter((job) =>
+        //   job.titulo.toLowerCase().includes(searchText) ||
+        job.descripcion.toLowerCase().includes(searchText),
+      );
+    }
+
+    if (technology) {
+      const valueTech = technology.toLowerCase();
+
+      filteredJobs = filteredJobs.filter((job) =>
+        job.data.technology.includes(valueTech.toLowerCase()),
+      );
+    }
+
+    const limitNumber = Number(limit);
+    const offsetNumber = Number(offset);
+
+    const paginatedJobs = filteredJobs.slice(
+      offsetNumber,
+      offsetNumber + limitNumber,
+    );
+
+    return {
+      total: filteredJobs.length,
+      results: paginatedJobs.length,
+      jobs: paginatedJobs,
+      limitNumber,
+      offsetNumber,
+    };
   }
 }

@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { JobController } from "../controllers/jobs.js";
 
 export const jobsRouter = Router();
 
@@ -14,4 +15,4 @@ Deberás implementar:
 - Eliminar un job por id [DELETE]
 */
 
-// jobsRouter.get('/', )
+jobsRouter.get("/", JobController.getAll);
