@@ -28,4 +28,16 @@ export class JobController {
       data: jobs,
     });
   }
+
+  static async getById(request, response) {
+    const { id } = request.params;
+
+    const jobById = await JobModel.getById(id);
+
+    if (!jobById) {
+      return response.status(404).json({ error: "Job Not Found" });
+    }
+
+    return response.status(200).json(jobById);
+  }
 }

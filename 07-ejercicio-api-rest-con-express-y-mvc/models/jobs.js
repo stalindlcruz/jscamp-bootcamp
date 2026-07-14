@@ -46,4 +46,9 @@ export class JobModel {
       offsetNumber,
     };
   }
+
+  static async getById(id) {
+    const job = jobs.find((job) => job.id === id);
+    return job;
+  }
 }
