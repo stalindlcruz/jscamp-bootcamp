@@ -19,7 +19,6 @@ export class JobModel {
       const searchText = text.toLowerCase();
 
       filteredJobs = filteredJobs.filter((job) =>
-        //   job.titulo.toLowerCase().includes(searchText) ||
         job.descripcion.toLowerCase().includes(searchText),
       );
     }
@@ -41,8 +40,7 @@ export class JobModel {
     );
 
     return {
-      total: filteredJobs.length,
-      results: paginatedJobs.length,
+      total: paginatedJobs.length,
       jobs: paginatedJobs,
       limitNumber,
       offsetNumber,

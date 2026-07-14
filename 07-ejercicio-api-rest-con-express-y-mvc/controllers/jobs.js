@@ -13,20 +13,18 @@ export class JobController {
       offset = DEFAULTS.LIMIT_OFFSET,
     } = request.query;
 
-    const { total, results, jobs, limitNumber, offsetNumber } =
-      await JobModel.getAll({
-        title,
-        text,
-        technology,
-        limit,
-        offset,
-      });
+    const { total, jobs, limitNumber, offsetNumber } = await JobModel.getAll({
+      title,
+      text,
+      technology,
+      limit,
+      offset,
+    });
 
     return response.json({
       total,
       limit: limitNumber,
       offset: offsetNumber,
-      results,
       data: jobs,
     });
   }
