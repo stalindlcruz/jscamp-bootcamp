@@ -75,4 +75,51 @@ export class JobModel {
 
     return newJob;
   }
+
+  static async updateJob({
+    id,
+    titulo,
+    empresa,
+    ubicacion,
+    descripcion,
+    data,
+    content,
+  }) {
+    const jobIndex = jobs.findIndex((job) => job.id === id);
+    if (jobIndex === -1) return null;
+
+    jobs[jobIndex] = {
+      id,
+      titulo,
+      empresa,
+      ubicacion,
+      descripcion,
+      data,
+      content,
+    };
+
+    return jobs[jobIndex];
+  }
+
+  static async partiallyUpdateJob({ id, dataToUpdate }) {
+    const jobIndex = jobs.findIndex((job) => job.id === id);
+    if (jobIndex === -1) return null;
+
+    jobs[jobIndex] = {
+      ...jobs[jobIndex],
+      ...dataToUpdate,
+    };
+
+    return jobs[jobIndex];
+  }
+
+  static async deleteJob(id) {
+    const jobIndex = jobs.findIndex((job) => job.id === id);
+
+    if (jobIndex === -1) return null;
+
+    jobs.splice(jobIndex, 1);
+
+    return true;
+  }
 }

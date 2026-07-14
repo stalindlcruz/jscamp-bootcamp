@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { JobController } from "../controllers/jobs.js";
+import { JobModel } from "../models/jobs.js";
 
 export const jobsRouter = Router();
 
@@ -18,3 +19,6 @@ Deberás implementar:
 jobsRouter.get("/", JobController.getAll);
 jobsRouter.get("/:id", JobController.getById);
 jobsRouter.post("/", JobController.createJob);
+jobsRouter.put("/:id", JobController.updateJob);
+jobsRouter.patch("/:id", JobController.partiallyUpdateJob);
+jobsRouter.delete("/:id", JobController.deleteJob);

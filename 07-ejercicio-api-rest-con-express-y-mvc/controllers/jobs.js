@@ -3,6 +3,7 @@
 import { JobModel } from "../models/jobs.js";
 import { DEFAULTS } from "../config.js";
 import { error } from "node:console";
+import { json } from "node:stream/consumers";
 
 export class JobController {
   static async getAll(request, response) {
@@ -75,5 +76,73 @@ export class JobController {
     }
 
     return response.status(201).json(newJob);
+  }
+
+  static async updateJob(request, response) {
+    const { id } = request.params;
+    const { titulo, empresa, ubicacion, descripcion, data, content } =
+      request.body;
+
+    if (
+      !titulo ||
+      !empresa ||
+      !ubicacion ||
+      !descripcion ||
+      !data ||
+      !content
+    ) {
+      return response
+        .status(400)
+        .json({ error: "Datos incompletos. Todos los campos son requeridos" });
+    }
+
+    const updatedJob = await JobModel.updateJob({
+      id,
+      titulo,
+      empresa,
+      ubicacion,
+      descripcion,
+      data,
+      content,
+    });
+
+    if (!updatedJob) {
+      return response.status(404).json({ error: "Trabajo no encontrado" });
+    }
+
+    return response.status(200).json(updatedJob);
+  }
+
+  static async partiallyUpdateJob(request, response) {
+    const { id } = request.params;
+    const dataToUpdate = request.body;
+
+    if (Object.keys(dataToUpdate).length === 0) {
+      return response.status(400).json({
+        error: "No se proporcionaron datos para actualizar el trabajo",
+      });
+    }
+
+    const updatedJob = await JobModel.partiallyUpdateJob({ id, dataToUpdate });
+
+    if (!updatedJob) {
+      return response.status(404).json({ error: "Trabajo no encontrado" });
+    }
+
+    return response.status(200).json(updatedJob);
+  }
+
+  static async deleteJob(request, response) {
+    const { id } = request.params;
+
+    const deletedJob = await JobModel.deleteJob(id);
+
+    if (!deletedJob) {
+      return response.status(404).json({ error: "Trabajo no encontrado" });
+    }
+
+    return response
+      .status(200)
+      .json({ mensaje: "Trabajo eliminado exitosamente" });
   }
 }
