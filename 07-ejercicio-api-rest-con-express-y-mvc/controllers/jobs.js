@@ -75,7 +75,9 @@ export class JobController {
         .json({ error: "No se puede crear el trabajo" });
     }
 
-    return response.status(201).json(newJob);
+    return response
+      .status(201)
+      .json({ mensaje: "Nuevo trabajo creado exitosamente", trabajo: newJob });
   }
 
   static async updateJob(request, response) {
@@ -110,7 +112,10 @@ export class JobController {
       return response.status(404).json({ error: "Trabajo no encontrado" });
     }
 
-    return response.status(200).json(updatedJob);
+    return response.status(200).json({
+      mensaje: "Trabajo actualizado exitosamente",
+      trabajo: updatedJob,
+    });
   }
 
   static async partiallyUpdateJob(request, response) {
@@ -129,7 +134,10 @@ export class JobController {
       return response.status(404).json({ error: "Trabajo no encontrado" });
     }
 
-    return response.status(200).json(updatedJob);
+    return response.status(200).json({
+      mensaje: "Trabajo actualizado parcialmente",
+      Trabajo: updatedJob,
+    });
   }
 
   static async deleteJob(request, response) {
