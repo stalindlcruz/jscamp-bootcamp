@@ -1,4 +1,5 @@
 import jobs from "../jobs.json" with { type: "json" };
+import { randomUUID } from "node:crypto";
 
 /* Aquí deberá ir la lógica de tu modelo */
 /* Recuerda que el modelo SOLO debe manejar la lógica de los datos, en este caso nuestro JSON */
@@ -50,5 +51,28 @@ export class JobModel {
   static async getById(id) {
     const job = jobs.find((job) => job.id === id);
     return job;
+  }
+
+  static async createJob({
+    titulo,
+    empresa,
+    ubicacion,
+    descripcion,
+    data,
+    content,
+  }) {
+    const newJob = {
+      id: randomUUID(),
+      titulo,
+      empresa,
+      ubicacion,
+      descripcion,
+      data,
+      content,
+    };
+
+    jobs.push(newJob);
+
+    return newJob;
   }
 }

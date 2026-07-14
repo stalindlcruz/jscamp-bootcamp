@@ -17,3 +17,4 @@ Deberás implementar:
 
 jobsRouter.get("/", JobController.getAll);
 jobsRouter.get("/:id", JobController.getById);
+jobsRouter.post("/", JobController.createJob);
