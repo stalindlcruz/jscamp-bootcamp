@@ -1,9 +1,7 @@
 /* Aquí debe ir la lógica de tu controlador */
 
-import { JobModel } from "../models/jobs.js";
 import { DEFAULTS } from "../config.js";
-import { error } from "node:console";
-import { json } from "node:stream/consumers";
+import { JobModel } from "../models/jobs.js";
 
 export class JobController {
   static async getAll(request, response) {
@@ -122,6 +120,7 @@ export class JobController {
     const { id } = request.params;
     const dataToUpdate = request.body;
 
+    // Muy bien planteado
     if (Object.keys(dataToUpdate).length === 0) {
       return response.status(400).json({
         error: "No se proporcionaron datos para actualizar el trabajo",
