@@ -3,3 +3,9 @@
 ## Dudas
 
 1. En el ejercicio número dos sería necesario indicar el status 200 con response.status(200) explicito, aunque node ya lo hace automaticamente por defecto? O es buena práctica siempre ponerlo explícitamente? hago la pregunta porque en el ejercicio indica que pongamos 200 si existe o 404 si no existe, para mi creo que seria mas práctico solo ponerlo en casos especifícos aunque para el ejercicio lo use hasta que me aclares las dudas jejejjeje.
+
+**Respuesta:**
+
+Buena pregunta jaja la respuesta es que no hace falta ponerlo, es más, ya sabiendo que si no pones nada el status es 200, queda más claro no ponerlo.
+En la letra lo pusimos para que quede claro que la respuesta que se espera es `200`, pero solo eso.
+Si no lo pones está perfecto! (Yo no lo pondría tampoco)
