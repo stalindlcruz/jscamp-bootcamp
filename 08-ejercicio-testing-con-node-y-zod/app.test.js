@@ -3,6 +3,7 @@ import assert from "node:assert";
 
 import { DEFAULTS } from "./config.js";
 import app from "./app.js";
+import { json } from "zod";
 
 /*
  * Aquí debes escribir tus tests para la API de jobs
@@ -76,6 +77,26 @@ describe("GET /jobs", () => {
   });
 });
 
+describe("GET /jobs/:id", () => {
+  test("Debe devolver el trabajo con ID especificado", async () => {
+    const jobId = "d35b2c89-5d60-4f26-b19a-6cfb2f1a0f57";
+    const response = await fetch(`${BASE_URL}/${jobId}`);
+    const json = await response.json();
+
+    assert.strictEqual(response.status, 200, "Debe devolver status code 200");
+    assert.strictEqual(json.id, jobId, "El ID coincide con el devuelto");
+  });
+
+  test("Debe devolver 404 cuando el ID no existe", async () => {
+    const jobId = "d35b2c89-5d60";
+    const response = await fetch(`${BASE_URL}/${jobId}`);
+    const json = await response.json();
+
+    assert.strictEqual(response.status, 404, "Debe devolver status code 404");
+    assert.ok(json.error);
+  });
+});
+
 describe("POST /jobs", () => {
   test("El nuevo trabajo se añade correctamente con buen formato", async () => {
     const newJob = {
@@ -103,5 +124,156 @@ describe("POST /jobs", () => {
       newJob,
       "Los datos devueltos deben coincidir con lo enviado",
     );
+  });
+
+  test("Titulo con menos de 3 caracteres debe devolver status code 400", async () => {
+    const newJob = {
+      titulo: "So",
+      empresa: "Google Inc",
+      ubicacion: "California USA",
+      descripcion:
+        "We are looking for a software engineer with experience in web development",
+    };
+
+    const response = await fetch(`${BASE_URL}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newJob),
+    });
+
+    const json = await response.json();
+    const { id, ...jobData } = json;
+
+    assert.strictEqual(response.status, 400, "El status code debe ser 404");
+  });
+
+  test("Titulo con mas de 100 caracteres debe devolver status code 400", async () => {
+    const newJob = {
+      titulo:
+        "Sokljasdkafjskjjasdfajadadkjfadskljfsdafdsakjfdskljfdsjdfjkladsjdsljkdffadsjfsdljfdsakldfsjaflddfkasjkldfjaklsjasdklsdfljfsdasdlkkdsldjsdfklasdfjfsdalkkksladjaskdljlsdjkldjfaksljdlfasdjdaksljslkfdjaldjadakslasljsfsdkljdlkdsjlkdsjdlkjdsklajdsklsdjklasjkadfsjkaljdkljskdsjafdsajkaskldsaj",
+      empresa: "Google Inc",
+      ubicacion: "California USA",
+      descripcion:
+        "We are looking for a software engineer with experience in web development",
+    };
+
+    const response = await fetch(`${BASE_URL}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newJob),
+    });
+
+    const json = await response.json();
+    const { id, ...jobData } = json;
+
+    assert.strictEqual(response.status, 400, "El status code debe ser 404");
+  });
+
+  test("Sin campo titulo debe devolver status code 400", async () => {
+    const newJob = {
+      empresa: "Google Inc",
+      ubicacion: "California USA",
+      descripcion:
+        "We are looking for a software engineer with experience in web development",
+    };
+
+    const response = await fetch(`${BASE_URL}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newJob),
+    });
+
+    const json = await response.json();
+    const { id, ...jobData } = json;
+
+    assert.strictEqual(response.status, 400, "El status code debe ser 404");
+  });
+
+  test("Titulo diferente a string debe devolver 400", async () => {
+    const newJob = {
+      titulo: {},
+      empresa: "Google Inc",
+      ubicacion: "California USA",
+      descripcion:
+        "We are looking for a software engineer with experience in web development",
+    };
+
+    const response = await fetch(`${BASE_URL}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newJob),
+    });
+
+    const json = await response.json();
+    const { id, ...jobData } = json;
+
+    assert.strictEqual(response.status, 400, "El status code debe ser 404");
+  });
+
+  test("Sin campo descripcion (es opcional) debe devolver status code 201", async () => {
+    const newJob = {
+      titulo: "Software Engineer",
+      empresa: "Google Inc",
+      ubicacion: "California USA",
+    };
+
+    const response = await fetch(`${BASE_URL}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newJob),
+    });
+
+    const json = await response.json();
+    const { id, ...jobData } = json;
+
+    assert.strictEqual(response.status, 201, "El status code debe ser 201");
+  });
+});
+
+describe("PUT /jobs/:id", () => {
+  test("Debe devolver status code 204 y actualizar el trabajo", async () => {
+    const jobId = "d35b2c89-5d60-4f26-b19a-6cfb2f1a0f57";
+
+    const newJob = {
+      titulo: "Software Engineer",
+      empresa: "Google Inc",
+      ubicacion: "California USA",
+      descripcion:
+        "We are looking for a software engineer with experience in web development",
+    };
+
+    const updateJob = await fetch(`${BASE_URL}/${jobId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newJob),
+    });
+
+    assert.strictEqual(updateJob.status, 204, "Debe devolver status code 204");
+
+    const response = await fetch(`${BASE_URL}/${jobId}`);
+    const jobUpdated = await response.json();
+    const { id, ...jobData } = jobUpdated;
+
+    assert.deepStrictEqual(newJob, jobData, "Se actualizo el job");
+  });
+
+  test("Debe devolver status code 404 cuando el ID no existe", async () => {
+    const jobId = "d35b2c89-5d60-4f26";
+
+    const newJob = {
+      titulo: "Software Engineer",
+      empresa: "Google Inc",
+      ubicacion: "California USA",
+      descripcion:
+        "We are looking for a software engineer with experience in web development",
+    };
+
+    const updateJob = await fetch(`${BASE_URL}/${jobId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newJob),
+    });
+
+    assert.strictEqual(updateJob.status, 404, "Debe devolver status code 404");
   });
 });
