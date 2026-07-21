@@ -75,3 +75,33 @@ describe("GET /jobs", () => {
     assert.strictEqual(json.data[0].id, secondJob);
   });
 });
+
+describe("POST /jobs", () => {
+  test("El nuevo trabajo se añade correctamente con buen formato", async () => {
+    const newJob = {
+      titulo: "Software Engineer",
+      empresa: "Google Inc",
+      ubicacion: "California USA",
+      descripcion:
+        "We are looking for a software engineer with experience in web development",
+    };
+
+    const response = await fetch(`${BASE_URL}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newJob),
+    });
+
+    const json = await response.json();
+    const { id, ...jobData } = json;
+
+    assert.strictEqual(response.status, 201, "El status code debe ser 201");
+    assert.ok(id, "El trabajo devuelto debe tener un id generado");
+
+    assert.deepStrictEqual(
+      jobData,
+      newJob,
+      "Los datos devueltos deben coincidir con lo enviado",
+    );
+  });
+});
