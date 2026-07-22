@@ -277,3 +277,79 @@ describe("PUT /jobs/:id", () => {
     assert.strictEqual(updateJob.status, 404, "Debe devolver status code 404");
   });
 });
+
+describe("PATCH jobs/:id", () => {
+  test("Debe devolver status code 204 y actualizar solo los campos enviados del trabajo", async () => {
+    const jobId = "d35b2c89-5d60-4f26-b19a-6cfb2f1a0f57";
+
+    const partialUpdate = {
+      titulo: "Software Engineer",
+      ubicacion: "California USA",
+    };
+
+    const originalResponse = await fetch(`${BASE_URL}/${jobId}`);
+    const originalJob = await originalResponse.json();
+
+    const {
+      titulo: originalTitulo,
+      ubicacion: originalUbicacion,
+      ...originalData
+    } = originalJob;
+
+    const updateJob = await fetch(`${BASE_URL}/${jobId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(partialUpdate),
+    });
+
+    assert.strictEqual(updateJob.status, 204, "El status code debe ser 204");
+
+    const response = await fetch(`${BASE_URL}/${jobId}`);
+    const jobUpdated = await response.json();
+
+    const {
+      titulo: updateTitulo,
+      ubicacion: updateUbicacion,
+      ...updateData
+    } = jobUpdated;
+
+    assert.deepStrictEqual(
+      partialUpdate.titulo,
+      updateTitulo,
+      "El campo enviado tiene el nuevo valor",
+    );
+
+    assert.strictEqual(
+      partialUpdate.ubicacion,
+      updateUbicacion,
+      "El campo enviado tiene el nuevo valor",
+    );
+
+    assert.deepStrictEqual(
+      originalData,
+      updateData,
+      "Los campos restantes tienen el mismo valor",
+    );
+  });
+
+  test("Debe devolver status code 404 cuando el ID no existe", async () => {
+    const jobId = "d35b2c89-5d60-4f";
+
+    const partialUpdate = {
+      titulo: "Software Engineer",
+      ubicacion: "California USA",
+    };
+
+    const updateJob = await fetch(`${BASE_URL}/${jobId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(partialUpdate),
+    });
+
+    assert.strictEqual(
+      updateJob.status,
+      404,
+      "Debe devolver status code 404 cuando id no existe",
+    );
+  });
+});
