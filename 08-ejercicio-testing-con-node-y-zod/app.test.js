@@ -353,3 +353,22 @@ describe("PATCH jobs/:id", () => {
     );
   });
 });
+
+describe("DELETE jobs/:id", () => {
+  test("Debe devolver status code 204 y eliminar un trabajo", async () => {
+    const jobId = "f62d8a34-923a-4ac2-9b0b-14e0ac2f5405";
+
+    const deleteJob = await fetch(`${BASE_URL}/${jobId}`, { method: "DELETE" });
+    assert.strictEqual(deleteJob.status, 204, "Debe devolver status code 204");
+
+    const response = await fetch(`${BASE_URL}/${jobId}`);
+    assert.strictEqual(response.status, 404, "Debe devolver 404");
+  });
+
+  test("Debe devolver status code 404 cuando el ID no existe", async () => {
+    const jobId = "f62d8a34-923a-4ac2-9b0b-sdsdsd";
+
+    const deleteJob = await fetch(`${BASE_URL}/${jobId}`, { method: "DELETE" });
+    assert.strictEqual(deleteJob.status, 404, "Debe devolver status code 404");
+  });
+});
