@@ -1,9 +1,8 @@
-import { test, describe, before, after } from "node:test";
 import assert from "node:assert";
+import { after, before, describe, test } from "node:test";
 
-import { DEFAULTS } from "./config.js";
 import app from "./app.js";
-import { json } from "zod";
+import { DEFAULTS } from "./config.js";
 
 /*
  * Aquí debes escribir tus tests para la API de jobs
@@ -70,6 +69,14 @@ describe("GET /jobs", () => {
     const secondJob = "d35b2c89-5d60-4f26-b19a-6cfb2f1a0f57";
     const offsetValue = 1;
 
+    /*
+    Genial! Una alternativa para no depender de un ID hardcodeado es:
+    - Hacer una petición para obtener todos los jobs
+    - Guardar en una variable el job con id = offset
+    - Hacer la petición que hiciste aquí abajo
+    - Comparar el ID del job que guardamos en variable con el primer job de la petición
+    */
+
     const response = await fetch(`${BASE_URL}?offset=${offsetValue}`);
     const json = await response.json();
 
@@ -82,6 +89,11 @@ describe("GET /jobs/:id", () => {
     const jobId = "d35b2c89-5d60-4f26-b19a-6cfb2f1a0f57";
     const response = await fetch(`${BASE_URL}/${jobId}`);
     const json = await response.json();
+
+    /* 
+    Muy bien!
+    Una alternativa es obtener todos los jobs, agarrar uno random y usar ese ID para hacer el test
+    */
 
     assert.strictEqual(response.status, 200, "Debe devolver status code 200");
     assert.strictEqual(json.id, jobId, "El ID coincide con el devuelto");
@@ -150,7 +162,8 @@ describe("POST /jobs", () => {
   test("Titulo con mas de 100 caracteres debe devolver status code 400", async () => {
     const newJob = {
       titulo:
-        "Sokljasdkafjskjjasdfajadadkjfadskljfsdafdsakjfdskljfdsjdfjkladsjdsljkdffadsjfsdljfdsakldfsjaflddfkasjkldfjaklsjasdklsdfljfsdasdlkkdsldjsdfklasdfjfsdalkkksladjaskdljlsdjkldjfaksljdlfasdjdaksljslkfdjaldjadakslasljsfsdkljdlkdsjlkdsjdlkjdsklajdsklsdjklasjkadfsjkaljdkljskdsjafdsajkaskldsaj",
+        /* "Sokljasdkafjskjjasdfajadadkjfadskljfsdafdsakjfdskljfdsjdfjkladsjdsljkdffadsjfsdljfdsakldfsjaflddfkasjkldfjaklsjasdklsdfljfsdasdlkkdsldjsdfklasdfjfsdalkkksladjaskdljlsdjkldjfaksljdlfasdjdaksljslkfdjaldjadakslasljsfsdkljdlkdsjlkdsjdlkjdsklajdsklsdjklasjkadfsjkaljdkljskdsjafdsajkaskldsaj", */ 
+        "a".repeat(101), // <- Queda mas claro :)
       empresa: "Google Inc",
       ubicacion: "California USA",
       descripcion:
@@ -356,6 +369,7 @@ describe("PATCH jobs/:id", () => {
 
 describe("DELETE jobs/:id", () => {
   test("Debe devolver status code 204 y eliminar un trabajo", async () => {
+    /* Una cosa que podemos hacer es crear un test nuevo, verificar que existe y luego borrarlo, verificando que ya no existe más. Así no tocamos items existentes */
     const jobId = "f62d8a34-923a-4ac2-9b0b-14e0ac2f5405";
 
     const deleteJob = await fetch(`${BASE_URL}/${jobId}`, { method: "DELETE" });
