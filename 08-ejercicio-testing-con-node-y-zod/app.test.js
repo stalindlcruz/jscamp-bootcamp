@@ -45,14 +45,25 @@ describe("GET /jobs", () => {
   });
 
   test("Debe filtrar trabajos por tecnología", async () => {
-    const tech = "react";
+    const responseJobs = await fetch(`${BASE_URL}`);
+    const jobs = await responseJobs.json();
+
+    const randomIndex = Math.floor(Math.random() * jobs.data.length);
+    const randomJob = jobs.data[randomIndex];
+
+    const randomIndexTech = Math.floor(
+      Math.random() * randomJob.data.technology.length,
+    );
+
+    const tech = randomJob.data.technology[randomIndexTech];
+
     const response = await fetch(`${BASE_URL}?technology=${tech}`);
     const json = await response.json();
 
     assert.ok(json.data.every((job) => job.data.technology.includes(tech)));
   });
 
-  test("Debe respetar el limite de resultados", async () => {
+  test("Debe respetar el límite de resultados", async () => {
     const limitValue = 2;
     const response = await fetch(`${BASE_URL}?limit=${limitValue}`);
     const json = await response.json();
@@ -66,8 +77,11 @@ describe("GET /jobs", () => {
   });
 
   test("Debe aplicar offset correctamente", async () => {
-    const secondJob = "d35b2c89-5d60-4f26-b19a-6cfb2f1a0f57";
     const offsetValue = 1;
+
+    const fetchJobs = await fetch(`${BASE_URL}`);
+    const jsonJobs = await fetchJobs.json();
+    const secondJobId = jsonJobs.data[offsetValue].id;
 
     /*
     Genial! Una alternativa para no depender de un ID hardcodeado es:
@@ -80,13 +94,18 @@ describe("GET /jobs", () => {
     const response = await fetch(`${BASE_URL}?offset=${offsetValue}`);
     const json = await response.json();
 
-    assert.strictEqual(json.data[0].id, secondJob);
+    assert.strictEqual(json.data[0].id, secondJobId);
   });
 });
 
 describe("GET /jobs/:id", () => {
   test("Debe devolver el trabajo con ID especificado", async () => {
-    const jobId = "d35b2c89-5d60-4f26-b19a-6cfb2f1a0f57";
+    const fetchJobs = await fetch(`${BASE_URL}`);
+    const jsonJobs = await fetchJobs.json();
+
+    const randomIndex = Math.floor(Math.random() * jsonJobs.data.length);
+    const jobId = jsonJobs.data[randomIndex].id;
+
     const response = await fetch(`${BASE_URL}/${jobId}`);
     const json = await response.json();
 
@@ -153,16 +172,13 @@ describe("POST /jobs", () => {
       body: JSON.stringify(newJob),
     });
 
-    const json = await response.json();
-    const { id, ...jobData } = json;
-
     assert.strictEqual(response.status, 400, "El status code debe ser 404");
   });
 
   test("Titulo con mas de 100 caracteres debe devolver status code 400", async () => {
     const newJob = {
       titulo:
-        /* "Sokljasdkafjskjjasdfajadadkjfadskljfsdafdsakjfdskljfdsjdfjkladsjdsljkdffadsjfsdljfdsakldfsjaflddfkasjkldfjaklsjasdklsdfljfsdasdlkkdsldjsdfklasdfjfsdalkkksladjaskdljlsdjkldjfaksljdlfasdjdaksljslkfdjaldjadakslasljsfsdkljdlkdsjlkdsjdlkjdsklajdsklsdjklasjkadfsjkaljdkljskdsjafdsajkaskldsaj", */ 
+        /* "Sokljasdkafjskjjasdfajadadkjfadskljfsdafdsakjfdskljfdsjdfjkladsjdsljkdffadsjfsdljfdsakldfsjaflddfkasjkldfjaklsjasdklsdfljfsdasdlkkdsldjsdfklasdfjfsdalkkksladjaskdljlsdjkldjfaksljdlfasdjdaksljslkfdjaldjadakslasljsfsdkljdlkdsjlkdsjdlkjdsklajdsklsdjklasjkadfsjkaljdkljskdsjafdsajkaskldsaj", */
         "a".repeat(101), // <- Queda mas claro :)
       empresa: "Google Inc",
       ubicacion: "California USA",
@@ -175,9 +191,6 @@ describe("POST /jobs", () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newJob),
     });
-
-    const json = await response.json();
-    const { id, ...jobData } = json;
 
     assert.strictEqual(response.status, 400, "El status code debe ser 404");
   });
@@ -195,9 +208,6 @@ describe("POST /jobs", () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newJob),
     });
-
-    const json = await response.json();
-    const { id, ...jobData } = json;
 
     assert.strictEqual(response.status, 400, "El status code debe ser 404");
   });
@@ -217,9 +227,6 @@ describe("POST /jobs", () => {
       body: JSON.stringify(newJob),
     });
 
-    const json = await response.json();
-    const { id, ...jobData } = json;
-
     assert.strictEqual(response.status, 400, "El status code debe ser 404");
   });
 
@@ -236,17 +243,12 @@ describe("POST /jobs", () => {
       body: JSON.stringify(newJob),
     });
 
-    const json = await response.json();
-    const { id, ...jobData } = json;
-
     assert.strictEqual(response.status, 201, "El status code debe ser 201");
   });
 });
 
 describe("PUT /jobs/:id", () => {
   test("Debe devolver status code 204 y actualizar el trabajo", async () => {
-    const jobId = "d35b2c89-5d60-4f26-b19a-6cfb2f1a0f57";
-
     const newJob = {
       titulo: "Software Engineer",
       empresa: "Google Inc",
@@ -255,10 +257,27 @@ describe("PUT /jobs/:id", () => {
         "We are looking for a software engineer with experience in web development",
     };
 
+    const responseNewJob = await fetch(`${BASE_URL}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newJob),
+    });
+
+    const jsonNewJob = await responseNewJob.json();
+    const jobId = jsonNewJob.id;
+
+    const updateData = {
+      titulo: "Senior Software Engineer",
+      empresa: "Meta",
+      ubicacion: "Remoto",
+      descripcion:
+        "We are looking for a software engineer with experience in web development",
+    };
+
     const updateJob = await fetch(`${BASE_URL}/${jobId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newJob),
+      body: JSON.stringify(updateData),
     });
 
     assert.strictEqual(updateJob.status, 204, "Debe devolver status code 204");
@@ -267,7 +286,10 @@ describe("PUT /jobs/:id", () => {
     const jobUpdated = await response.json();
     const { id, ...jobData } = jobUpdated;
 
-    assert.deepStrictEqual(newJob, jobData, "Se actualizo el job");
+    assert.deepStrictEqual(updateData, jobData, "Se actualizo el job");
+
+    const deleteJob = await fetch(`${BASE_URL}/${jobId}`, { method: "DELETE" });
+    assert.strictEqual(deleteJob.status, 204, "Debe eliminarse correctamente");
   });
 
   test("Debe devolver status code 404 cuando el ID no existe", async () => {
@@ -293,11 +315,26 @@ describe("PUT /jobs/:id", () => {
 
 describe("PATCH jobs/:id", () => {
   test("Debe devolver status code 204 y actualizar solo los campos enviados del trabajo", async () => {
-    const jobId = "d35b2c89-5d60-4f26-b19a-6cfb2f1a0f57";
+    const newJob = {
+      titulo: "Software Engineer",
+      empresa: "Google Inc",
+      ubicacion: "California USA",
+      descripcion:
+        "We are looking for a software engineer with experience in web development",
+    };
+
+    const createJob = await fetch(`${BASE_URL}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newJob),
+    });
+
+    const createdJob = await createJob.json();
+    const jobId = createdJob.id;
 
     const partialUpdate = {
-      titulo: "Software Engineer",
-      ubicacion: "California USA",
+      titulo: "Senior Software Engineer",
+      ubicacion: "Remote",
     };
 
     const originalResponse = await fetch(`${BASE_URL}/${jobId}`);
@@ -317,8 +354,8 @@ describe("PATCH jobs/:id", () => {
 
     assert.strictEqual(updateJob.status, 204, "El status code debe ser 204");
 
-    const response = await fetch(`${BASE_URL}/${jobId}`);
-    const jobUpdated = await response.json();
+    const responseUpdated = await fetch(`${BASE_URL}/${jobId}`);
+    const jobUpdated = await responseUpdated.json();
 
     const {
       titulo: updateTitulo,
@@ -326,7 +363,7 @@ describe("PATCH jobs/:id", () => {
       ...updateData
     } = jobUpdated;
 
-    assert.deepStrictEqual(
+    assert.strictEqual(
       partialUpdate.titulo,
       updateTitulo,
       "El campo enviado tiene el nuevo valor",
@@ -343,6 +380,9 @@ describe("PATCH jobs/:id", () => {
       updateData,
       "Los campos restantes tienen el mismo valor",
     );
+
+    const deleteJob = await fetch(`${BASE_URL}/${jobId}`, { method: "DELETE" });
+    assert.strictEqual(deleteJob.status, 204, "Debe eliminarse correctamente");
   });
 
   test("Debe devolver status code 404 cuando el ID no existe", async () => {
@@ -370,7 +410,26 @@ describe("PATCH jobs/:id", () => {
 describe("DELETE jobs/:id", () => {
   test("Debe devolver status code 204 y eliminar un trabajo", async () => {
     /* Una cosa que podemos hacer es crear un test nuevo, verificar que existe y luego borrarlo, verificando que ya no existe más. Así no tocamos items existentes */
-    const jobId = "f62d8a34-923a-4ac2-9b0b-14e0ac2f5405";
+
+    const newJob = {
+      titulo: "Software Engineer",
+      empresa: "Google Inc",
+      ubicacion: "California USA",
+      descripcion:
+        "We are looking for a software engineer with experience in web development",
+    };
+
+    const createJob = await fetch(`${BASE_URL}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newJob),
+    });
+
+    const createdJob = await createJob.json();
+    const jobId = createdJob.id;
+
+    const checkResponse = await fetch(`${BASE_URL}/${jobId}`);
+    assert.strictEqual(checkResponse.status, 200, "El job creado debe existir");
 
     const deleteJob = await fetch(`${BASE_URL}/${jobId}`, { method: "DELETE" });
     assert.strictEqual(deleteJob.status, 204, "Debe devolver status code 204");
