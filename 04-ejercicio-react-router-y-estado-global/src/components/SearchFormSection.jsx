@@ -82,6 +82,7 @@ export function SearchFormSection({
             id="filter-technology"
             // aquí debería ir `value`, es el valor que va a tomar React para poder controlar el select. `defaultValue` es el value que se utiliza en los inputs no controlados de HTML. Siempre usa `value` en React para controlar el select.
             value={initialFilters.technology}
+            onChange={handleChange}
           >
             <option value="">Tecnología</option>
             <optgroup label="Tecnologías populares">
@@ -104,6 +105,7 @@ export function SearchFormSection({
             name={idLocation}
             id="filter-location"
             value={initialFilters.location}
+            onChange={handleChange}
           >
             <option value="">Ubicación</option>
             <option value="remoto">Remoto</option>
@@ -117,6 +119,7 @@ export function SearchFormSection({
             name={idExperienceLevel}
             id="filter-experience-level"
             value={initialFilters.experienceLevel}
+            onChange={handleChange}
           >
             <option value="">Nivel de experiencia</option>
             <option value="junior">Junior</option>
