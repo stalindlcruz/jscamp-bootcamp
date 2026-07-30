@@ -37,7 +37,7 @@ export default function HomePage() {
               name="search"
               required
               type="text"
-              // role="searchbox"
+              role="searchbox"
               placeholder="Buscar empleos por título, habilidad o empresa"
             />
 
