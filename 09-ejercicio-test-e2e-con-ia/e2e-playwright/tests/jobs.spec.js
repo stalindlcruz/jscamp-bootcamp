@@ -49,3 +49,26 @@ test("Usuario aplicando a una oferta dentro del detalle", async ({ page }) => {
   const appliedBtn = page.getByRole("button", { name: /aplicado/i });
   await expect(appliedBtn).toBeVisible();
 });
+
+test("Verificando los filtros de ubicación", async ({ page }) => {
+  await page.goto("http://localhost:5173/search");
+
+  const remoteFilter = page.getByRole("combobox", { name: /ubicación/i });
+  await remoteFilter.selectOption("Remoto");
+
+  const jobCards = page.getByRole("article");
+  const allJobCards = await jobCards.all();
+
+  for (const card of allJobCards) {
+    await expect(card).toHaveAttribute("data-modalidad", /remoto/i);
+  }
+
+  const levelFilter = page.getByRole("combobox", { name: /experiencia/i });
+  await levelFilter.selectOption("Senior");
+
+  const updatedJobCards = await jobCards.all();
+
+  for (const card of updatedJobCards) {
+    await expect(card).toHaveAttribute("data-nivel", /senior/i);
+  }
+});

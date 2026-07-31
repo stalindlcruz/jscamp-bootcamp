@@ -13,7 +13,7 @@ export function Pagination({ currentPage = 1, totalPages = 10, onPageChange }) {
   } = usePagination(currentPage, totalPages, onPageChange);
 
   return (
-    <nav className={styles.pagination}>
+    <nav className={styles.pagination} aria-label="paginación">
       <a
         href={buildPageUrl(currentPage - 1)}
         style={stylePrevButton}

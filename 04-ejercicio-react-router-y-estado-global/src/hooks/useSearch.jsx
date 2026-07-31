@@ -29,7 +29,7 @@ export const useSearchForm = ({
         onTextFilter(text);
       }, 500);
     } else {
-      const formData = new FormData(event.currentTarget);
+      const formData = new FormData(event.target.form);
 
       const filters = {
         technology: formData.get(idTechnology),
