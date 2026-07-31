@@ -24,3 +24,28 @@ test("Simulando usuario buscando trabajo por tecnologiía", async ({ page }) => 
   const firstJob = jobsListing.getByRole("article").first();
   await expect(firstJob).toBeVisible();
 });
+
+test("Usuario aplicando a una oferta dentro del detalle", async ({ page }) => {
+  await page.goto("http://localhost:5173/search");
+
+  const searcInput = page.getByRole("searchbox");
+  await searcInput.fill("javascript");
+
+  const firstJob = page.locator(".jobs-listings").getByRole("article").first();
+  const jobLink = firstJob.getByRole("link").first();
+  await jobLink.click();
+
+  const pageDetails = page
+    .getByRole("region", { name: /descripción/i })
+    .first();
+  await expect(pageDetails).toBeVisible();
+
+  const loginBtn = page.getByRole("button", { name: /iniciar sesion/i });
+  await loginBtn.click();
+
+  const applyBtn = page.getByRole("button", { name: /aplicar/i });
+  await applyBtn.click();
+
+  const appliedBtn = page.getByRole("button", { name: /aplicado/i });
+  await expect(appliedBtn).toBeVisible();
+});

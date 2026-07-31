@@ -5,7 +5,7 @@ export function DetailJobSection({ title, content }) {
   const htmlContent = snarkdown(content);
 
   return (
-    <section className={styles.jobSection}>
+    <section className={styles.jobSection} aria-label="Descripción del trabajo">
       <h2>{title}</h2>
       <div
         className={`prose`}

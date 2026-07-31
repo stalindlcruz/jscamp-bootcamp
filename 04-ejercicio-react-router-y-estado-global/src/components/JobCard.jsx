@@ -15,7 +15,7 @@ export function JobCard({ job }) {
       <div>
         <h3>
           <Link
-            to={`/jobs/${job.id}`}
+            href={`/jobs/${job.id}`}
             className={styles.title}
             aria-label={`Trabajo de ${job.titulo}`}
           >
@@ -30,7 +30,7 @@ export function JobCard({ job }) {
 
       <div className={styles.detailsBtn}>
         <Link
-          to={`/jobs/${job.id}`}
+          href={`/jobs/${job.id}`}
           className={styles.details}
           aria-label={`Ver Detalles de ${job.titulo}`}
         >

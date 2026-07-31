@@ -60,6 +60,7 @@ export function SearchFormSection({
             name={idText}
             id="empleos-search-input"
             type="text"
+            role="searchbox"
             placeholder="Buscar trabajos, empresas o habilidades"
             defaultValue={initialText}
           />

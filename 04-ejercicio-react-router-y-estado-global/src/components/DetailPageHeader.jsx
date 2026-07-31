@@ -1,13 +1,18 @@
 import { useFavoriteStore } from "../store/favoriteStore";
 import { useAuthStore } from "../store/authStore";
+import { useState } from "react";
 import styles from "../pages/Detail.module.css";
 
 function DetailApplyBtn() {
   const { isLoggedIn } = useAuthStore();
+  const [textApply, setTextApplied] = useState("Aplicar ahora");
 
   return (
-    <button disabled={!isLoggedIn}>
-      {isLoggedIn ? "Aplicar ahora" : "Inicia sesión para aplicar"}
+    <button
+      disabled={!isLoggedIn}
+      onClick={(defaultText) => setTextApplied("Aplicado")}
+    >
+      {isLoggedIn ? textApply : "Inicia sesión para aplicar"}
     </button>
   );
 }
