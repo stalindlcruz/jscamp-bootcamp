@@ -72,3 +72,30 @@ test("Verificando los filtros de ubicación", async ({ page }) => {
     await expect(card).toHaveAttribute("data-nivel", /senior/i);
   }
 });
+
+test("Verificando la paginación", async ({ page }) => {
+  await page.goto("http://localhost:5173/search");
+
+  const searcInput = page.getByRole("searchbox");
+  await searcInput.fill("developer");
+
+  const jobCards = page.getByRole("article");
+
+  const firstPageResults = await jobCards.all();
+  const firstPageResultsTitle = await Promise.all(
+    firstPageResults.map((card) => card.locator("h3").textContent()),
+  );
+
+  const nav = page.getByRole("navigation", { name: /paginación/i });
+  await expect(nav).toBeVisible();
+
+  const nextBtn = nav.getByRole("link", { name: /siguiente/i });
+  await nextBtn.click();
+
+  const secondPageResults = await jobCards.all();
+  const secondPageResultsTitle = await Promise.all(
+    secondPageResults.map((card) => card.locator("h3").textContent()),
+  );
+
+  expect(firstPageResultsTitle).not.toEqual(secondPageResultsTitle);
+});
