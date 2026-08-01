@@ -6,8 +6,8 @@ export function HeaderUserButton() {
   const { handleLogout } = useLogout();
 
   return isLoggedIn ? (
-    <button onClick={handleLogout}>Cerrar Sesion</button>
+    <button onClick={handleLogout}>Cerrar sesión</button>
   ) : (
-    <button onClick={login}>Iniciar Sesion</button>
+    <button onClick={login}>Iniciar sesión</button>
   );
 }

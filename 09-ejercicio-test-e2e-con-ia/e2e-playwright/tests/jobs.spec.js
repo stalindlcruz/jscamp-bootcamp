@@ -16,7 +16,7 @@ test("Simulando usuario buscando trabajo por tecnologiía", async ({ page }) => 
   const searcInput = page.getByRole("searchbox");
   await searcInput.fill("react");
 
-  page.getByRole("button", { name: "Buscar" }).click();
+  await page.getByRole("button", { name: "Buscar" }).click();
 
   const jobsListing = page.locator(".jobs-listings");
   await expect(jobsListing).toBeVisible();
@@ -25,28 +25,25 @@ test("Simulando usuario buscando trabajo por tecnologiía", async ({ page }) => 
   await expect(firstJob).toBeVisible();
 });
 
-test("Usuario aplicando a una oferta dentro del detalle", async ({ page }) => {
+test("Usuario aplicando a una oferta", async ({ page }) => {
   await page.goto("http://localhost:5173/search");
 
-  const searcInput = page.getByRole("searchbox");
-  await searcInput.fill("javascript");
+  const searchInput = page.getByRole("searchbox");
+  await searchInput.fill("JavaScript");
 
-  const firstJob = page.locator(".jobs-listings").getByRole("article").first();
-  const jobLink = firstJob.getByRole("link").first();
-  await jobLink.click();
+  const firstJob = page.getByRole("article").first();
+  await firstJob.click();
 
-  const pageDetails = page
-    .getByRole("region", { name: /descripción/i })
-    .first();
-  await expect(pageDetails).toBeVisible();
+  const jobDetail = firstJob.locator("p");
+  await expect(jobDetail).toBeVisible();
 
-  const loginBtn = page.getByRole("button", { name: /iniciar sesion/i });
+  const loginBtn = page.getByRole("button", { name: /iniciar sesión/i });
   await loginBtn.click();
 
-  const applyBtn = page.getByRole("button", { name: /aplicar/i });
+  const applyBtn = firstJob.getByRole("button", { name: /aplicar/i });
   await applyBtn.click();
 
-  const appliedBtn = page.getByRole("button", { name: /aplicado/i });
+  const appliedBtn = firstJob.getByRole("button", { name: /aplicado/i });
   await expect(appliedBtn).toBeVisible();
 });
 
@@ -80,6 +77,7 @@ test("Verificando la paginación", async ({ page }) => {
   await searcInput.fill("developer");
 
   const jobCards = page.getByRole("article");
+  await expect(jobCards.first()).toBeVisible();
 
   const firstPageResults = await jobCards.all();
   const firstPageResultsTitle = await Promise.all(
@@ -98,4 +96,27 @@ test("Verificando la paginación", async ({ page }) => {
   );
 
   expect(firstPageResultsTitle).not.toEqual(secondPageResultsTitle);
+});
+
+test("Usuario aplicando a una oferta dentro del detalle", async ({ page }) => {
+  await page.goto("http://localhost:5173/search");
+
+  const firstJob = page.locator(".jobs-listings").getByRole("article").first();
+  const jobLink = firstJob.getByRole("link").first();
+  await jobLink.click();
+
+  const pageDetails = page
+    .getByRole("region", { name: /descripción/i })
+    .first();
+  await expect(pageDetails).toBeVisible();
+
+  const loginBtn = page.getByRole("button", { name: /iniciar sesión/i });
+  await loginBtn.click();
+
+  const applyBtn = page.getByRole("button", { name: /aplicar/i });
+  await expect(applyBtn).toBeVisible();
+  await applyBtn.click();
+
+  const appliedBtn = page.getByRole("button", { name: /aplicado/i });
+  await expect(appliedBtn).toBeVisible();
 });
