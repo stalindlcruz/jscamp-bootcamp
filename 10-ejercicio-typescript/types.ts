@@ -34,4 +34,6 @@ export type Technology =
   | "rust"
   | "php"
   | "ruby"
-  | "c#";
+  | "c#"
+  | "css"
+  | "tailwind";
