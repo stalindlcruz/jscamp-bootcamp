@@ -11,7 +11,7 @@ export type ExperienceLevel = "junior" | "mid" | "senior" | "lead";
 
 export type WorkMode = "remoto" | "presencial" | "hibrido";
 
-export type ApplicationStatusStatus =
+export type ApplicationStatus =
   | "pending"
   | "reviewing"
   | "accepted"
