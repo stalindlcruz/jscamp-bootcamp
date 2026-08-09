@@ -21,12 +21,11 @@ export function filterByTechnology(
 // Función para filtrar por salario mínimo
 export function filterByMinSalary(
   jobs: Array<Job>,
-  minSalary?: number,
-): Array<Job> | undefined {
-  if (minSalary) {
-    jobs.filter((job) => job.salary !== undefined && job.salary >= minSalary);
-  }
-  return undefined;
+  minSalary: number,
+): Array<Job> {
+  return jobs.filter(
+    (job) => job.salary !== undefined && job.salary >= minSalary,
+  );
 }
 
 // Función para buscar por texto
