@@ -1,6 +1,5 @@
 /* En este archivo deberás tipar las interfaces de los servicios de búsqueda y aplicación a empleo */
 import type { Job } from "./objects.ts";
-import { jobs } from "./arrays.ts";
 
 import type {
   ExperienceLevel,
