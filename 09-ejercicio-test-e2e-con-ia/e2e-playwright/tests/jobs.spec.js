@@ -1,12 +1,14 @@
 /* Aquí irá el código de tu test */
 
 // @ts-check
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 test("Verifica que existe un buscador visible", async ({ page }) => {
   await page.goto("http://localhost:5173");
 
-  const searcInput = page.getByRole("searchbox");
+  const searcInput = page.getByRole("searchbox", {
+    name: /buscar empleos/i // <- Damos más detalle a la búsqueda
+  });
   await expect(searcInput).toBeVisible();
 });
 
@@ -34,8 +36,16 @@ test("Usuario aplicando a una oferta", async ({ page }) => {
   const firstJob = page.getByRole("article").first();
   await firstJob.click();
 
-  const jobDetail = firstJob.locator("p");
-  await expect(jobDetail).toBeVisible();
+  // No hace falta esto
+  // const jobDetail = firstJob.locator("p");
+  // await expect(jobDetail).toBeVisible();
+
+  // Podemos hacer un paso extra para verificar que no se puede aplicar a una oferta hasta que se haya iniciado sesión
+  const applyBtnDisabled = firstJob.getByRole("button", { name: /aplicar/i });
+  await  expect(applyBtnDisabled).toBeDisabled()
+
+  const appliedBtnDisabled = firstJob.getByRole("button", { name: /aplicado/i });
+  await expect(appliedBtnDisabled).not.toBeVisible();
 
   const loginBtn = page.getByRole("button", { name: /iniciar sesión/i });
   await loginBtn.click();
@@ -44,6 +54,7 @@ test("Usuario aplicando a una oferta", async ({ page }) => {
   await applyBtn.click();
 
   const appliedBtn = firstJob.getByRole("button", { name: /aplicado/i });
+  await expect(appliedBtn).not.toBeDisabled();
   await expect(appliedBtn).toBeVisible();
 });
 
@@ -81,7 +92,9 @@ test("Verificando la paginación", async ({ page }) => {
 
   const firstPageResults = await jobCards.all();
   const firstPageResultsTitle = await Promise.all(
-    firstPageResults.map((card) => card.locator("h3").textContent()),
+    firstPageResults.map((card) => card.getByRole("heading", {
+      level: 3
+    }).textContent()),
   );
 
   const nav = page.getByRole("navigation", { name: /paginación/i });
@@ -92,7 +105,9 @@ test("Verificando la paginación", async ({ page }) => {
 
   const secondPageResults = await jobCards.all();
   const secondPageResultsTitle = await Promise.all(
-    secondPageResults.map((card) => card.locator("h3").textContent()),
+    secondPageResults.map((card) => card.getByRole("heading", {
+      level: 3
+    }).textContent()),
   );
 
   expect(firstPageResultsTitle).not.toEqual(secondPageResultsTitle);
