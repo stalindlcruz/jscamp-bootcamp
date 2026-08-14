@@ -7,7 +7,7 @@ test("Verifica que existe un buscador visible", async ({ page }) => {
   await page.goto("http://localhost:5173");
 
   const searcInput = page.getByRole("searchbox", {
-    name: /buscar empleos/i // <- Damos más detalle a la búsqueda
+    name: /buscar empleos/i, // <- Damos más detalle a la búsqueda
   });
   await expect(searcInput).toBeVisible();
 });
@@ -42,9 +42,11 @@ test("Usuario aplicando a una oferta", async ({ page }) => {
 
   // Podemos hacer un paso extra para verificar que no se puede aplicar a una oferta hasta que se haya iniciado sesión
   const applyBtnDisabled = firstJob.getByRole("button", { name: /aplicar/i });
-  await  expect(applyBtnDisabled).toBeDisabled()
+  await expect(applyBtnDisabled).toBeDisabled();
 
-  const appliedBtnDisabled = firstJob.getByRole("button", { name: /aplicado/i });
+  const appliedBtnDisabled = firstJob.getByRole("button", {
+    name: /aplicado/i,
+  });
   await expect(appliedBtnDisabled).not.toBeVisible();
 
   const loginBtn = page.getByRole("button", { name: /iniciar sesión/i });
@@ -92,9 +94,13 @@ test("Verificando la paginación", async ({ page }) => {
 
   const firstPageResults = await jobCards.all();
   const firstPageResultsTitle = await Promise.all(
-    firstPageResults.map((card) => card.getByRole("heading", {
-      level: 3
-    }).textContent()),
+    firstPageResults.map((card) =>
+      card
+        .getByRole("heading", {
+          level: 3,
+        })
+        .textContent(),
+    ),
   );
 
   const nav = page.getByRole("navigation", { name: /paginación/i });
@@ -105,9 +111,13 @@ test("Verificando la paginación", async ({ page }) => {
 
   const secondPageResults = await jobCards.all();
   const secondPageResultsTitle = await Promise.all(
-    secondPageResults.map((card) => card.getByRole("heading", {
-      level: 3
-    }).textContent()),
+    secondPageResults.map((card) =>
+      card
+        .getByRole("heading", {
+          level: 3,
+        })
+        .textContent(),
+    ),
   );
 
   expect(firstPageResultsTitle).not.toEqual(secondPageResultsTitle);
