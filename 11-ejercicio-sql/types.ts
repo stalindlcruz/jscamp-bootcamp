@@ -7,26 +7,26 @@
 // ================================
 
 export interface Job {
-  id: string
-  title: string
-  company: string
-  location: string
-  description: string
-  data: JobData
-  content?: JobContent
+  id: string;
+  title: string;
+  company: string;
+  location: string;
+  description: string;
+  data: JobData;
+  content?: JobContent;
 }
 
 export interface JobData {
-  technology: string[]
-  modality: 'remote' | 'onsite' | 'hybrid'
-  level: 'junior' | 'mid' | 'senior'
+  technology: string[];
+  modality: "remote" | "onsite" | "hybrid";
+  level: "junior" | "mid" | "senior";
 }
 
 export interface JobContent {
-  description: string
-  responsibilities: string
-  requirements: string
-  about: string
+  description: string;
+  responsibilities: string;
+  requirements: string;
+  about: string;
 }
 
 // ================================
@@ -34,19 +34,19 @@ export interface JobContent {
 // ================================
 
 // Para crear - sin id
-export type CreateJobDTO = Omit<Job, 'id'>
+export type CreateJobDTO = Omit<Job, "id">;
 
 // Para actualizar - todo opcional
-export type UpdateJobDTO = Partial<CreateJobDTO>
+export type UpdateJobDTO = Partial<CreateJobDTO>;
 
 // ================================
 // FILTROS
 // ================================
 
 export interface JobFilters {
-  tech?: string
-  modality?: JobData['modality']
-  level?: JobData['level']
+  tech?: string;
+  modality?: JobData["modality"];
+  level?: JobData["level"];
 }
 
 // ================================
@@ -54,6 +54,21 @@ export interface JobFilters {
 // ================================
 
 export interface ApiError {
-  message: string
-  errors?: unknown[]
+  message: string;
+  errors?: unknown[];
 }
+
+export type JobRow = {
+  id: string;
+  title: string;
+  company: string;
+  location: string;
+  description: string;
+  technologies: string;
+  modality: JobData["modality"];
+  level: JobData["level"];
+  content_description: string;
+  responsibilities: string;
+  requirements: string;
+  about: string;
+};

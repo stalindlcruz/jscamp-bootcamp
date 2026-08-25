@@ -7,7 +7,11 @@
     "description": "Buscamos un ingeniero de software con experiencia en desarrollo web y conocimientos en JavaScript, React y Node.js. El candidato ideal debe ser capaz de trabajar en equipo y tener buenas habilidades de comunicación.",
     "modality": "remote",
     "level": "senior",
-    "technologies": ["react", "node", "javascript"],
+    "technologies": [
+      "react",
+      "node",
+      "javascript"
+    ],
     "content": {
       "description": "Tech Solutions Inc. está buscando un Ingeniero de Software Senior altamente motivado y experimentado para unirse a nuestro equipo remoto. El candidato ideal tendrá una sólida formación en desarrollo de software, con experiencia en el diseño, desarrollo e implementación de soluciones de software escalables y de alto rendimiento. Como Ingeniero de Software Senior, usted será responsable de liderar proyectos de desarrollo, mentorizar a ingenieros junior y colaborar con equipos multifuncionales para entregar productos de software de alta calidad.",
       "responsibilities": "- Diseñar, desarrollar y mantener aplicaciones web utilizando tecnologías modernas.\n- Colaborar con equipos de producto y diseño para definir y entregar nuevas características.\n- Escribir código limpio, eficiente y bien documentado.\n- Realizar revisiones de código y proporcionar retroalimentación constructiva a los miembros del equipo.\n- Mentorizar ingenieros junior y guiar su desarrollo profesional.\n- Participar en reuniones de planificación y retrospectivas del equipo.\n- Mantenerse actualizado con las últimas tendencias y mejores prácticas en desarrollo de software.",
@@ -23,7 +27,12 @@
     "description": "Estamos buscando un analista de datos con experiencia en el manejo de grandes conjuntos de datos y herramientas de visualización. Se requiere conocimiento en SQL, Python y R.",
     "modality": "onsite",
     "level": "junior",
-    "technologies": ["python", "sql", "r", "pandas"],
+    "technologies": [
+      "python",
+      "sql",
+      "r",
+      "pandas"
+    ],
     "content": {
       "description": "Data Driven Co. está en busca de un Analista de Datos para unirse a nuestro equipo en Ciudad de México. Esta posición es ideal para profesionales que están comenzando su carrera en análisis de datos y desean trabajar con grandes volúmenes de información para generar insights valiosos que impulsen decisiones de negocio.",
       "responsibilities": "- Recolectar, procesar y analizar grandes conjuntos de datos para identificar patrones y tendencias.\n- Crear visualizaciones e informes utilizando herramientas como Tableau o Power BI.\n- Colaborar con diferentes departamentos para entender sus necesidades de datos.\n- Escribir consultas SQL eficientes para extraer y transformar datos.\n- Desarrollar scripts en Python o R para automatizar análisis recurrentes.\n- Presentar hallazgos y recomendaciones a stakeholders no técnicos.",
@@ -39,7 +48,12 @@
     "description": "Buscamos un desarrollador de aplicaciones móviles con experiencia en iOS y/o Android. El candidato debe tener conocimientos en Swift, Kotlin y el desarrollo de interfaces de usuario.",
     "modality": "onsite",
     "level": "mid",
-    "technologies": ["swift", "kotlin", "react-native", "flutter"],
+    "technologies": [
+      "swift",
+      "kotlin",
+      "react-native",
+      "flutter"
+    ],
     "content": {
       "description": "Mobile Apps Ltd. busca un Desarrollador de Aplicaciones Móviles con experiencia en crear aplicaciones nativas y multiplataforma. Trabajarás en proyectos diversos que impactan a millones de usuarios, desarrollando soluciones móviles innovadoras y de alto rendimiento.",
       "responsibilities": "- Desarrollar aplicaciones móviles nativas para iOS utilizando Swift o Android con Kotlin.\n- Implementar interfaces de usuario atractivas y funcionales siguiendo guías de diseño.\n- Integrar APIs RESTful y servicios backend en las aplicaciones móviles.\n- Optimizar el rendimiento de las aplicaciones para diferentes dispositivos.\n- Participar en revisiones de código y pruebas de calidad.\n- Mantenerse actualizado con las últimas tendencias en desarrollo móvil.",
@@ -55,7 +69,14 @@
     "description": "Estamos buscando un ingeniero de DevOps con experiencia en la gestión de infraestructuras en la nube, automatización de procesos y herramientas de integración continua. Se requiere conocimiento en AWS, Azure o GCP.",
     "modality": "remote",
     "level": "mid",
-    "technologies": ["aws", "azure", "gcp", "docker", "kubernetes", "terraform"],
+    "technologies": [
+      "aws",
+      "azure",
+      "gcp",
+      "docker",
+      "kubernetes",
+      "terraform"
+    ],
     "content": {
       "description": "Cloud Services SA busca un Ingeniero de DevOps para gestionar y optimizar nuestra infraestructura cloud. Serás responsable de implementar prácticas de CI/CD, automatizar despliegues y garantizar la alta disponibilidad de nuestros sistemas en producción.",
       "responsibilities": "- Diseñar, implementar y mantener infraestructura cloud en AWS, Azure o GCP.\n- Desarrollar y mantener pipelines de CI/CD para automatizar despliegues.\n- Gestionar contenedores con Docker y orquestarlos con Kubernetes.\n- Implementar infraestructura como código usando Terraform o CloudFormation.\n- Monitorear sistemas y resolver incidencias de producción.\n- Optimizar costos y rendimiento de la infraestructura cloud.\n- Colaborar con equipos de desarrollo para mejorar procesos de entrega.",
@@ -71,7 +92,12 @@
     "description": "Estamos buscando un diseñador UX/UI con pasión por crear experiencias digitales excepcionales. Se requiere experiencia en Figma, diseño centrado en el usuario y colaboración con equipos de desarrollo.",
     "modality": "onsite",
     "level": "mid",
-    "technologies": ["figma", "sketch", "adobe-xd", "prototyping"],
+    "technologies": [
+      "figma",
+      "sketch",
+      "adobe-xd",
+      "prototyping"
+    ],
     "content": {
       "description": "Creative Minds Studio busca un Diseñador UX/UI creativo y orientado al detalle para crear interfaces intuitivas y visualmente atractivas. Trabajarás en proyectos innovadores, desde la conceptualización hasta la entrega final.",
       "responsibilities": "- Crear wireframes, prototipos y diseños de alta fidelidad utilizando Figma.\n- Realizar investigación de usuarios y pruebas de usabilidad.\n- Diseñar interfaces centradas en el usuario para aplicaciones web y móviles.\n- Colaborar estrechamente con desarrolladores para asegurar la correcta implementación.\n- Mantener y evolucionar sistemas de diseño y guías de estilo.\n- Presentar conceptos de diseño a stakeholders y clientes.",
@@ -87,7 +113,12 @@
     "description": "Se busca un administrador de bases de datos con experiencia en PostgreSQL y MySQL. El candidato deberá asegurar la disponibilidad, seguridad y rendimiento de las bases de datos de producción.",
     "modality": "onsite",
     "level": "mid",
-    "technologies": ["postgresql", "mysql", "mongodb", "redis"],
+    "technologies": [
+      "postgresql",
+      "mysql",
+      "mongodb",
+      "redis"
+    ],
     "content": {
       "description": "Secure Data Corp. busca un Administrador de Bases de Datos experimentado para gestionar y optimizar nuestros sistemas de bases de datos críticos. Serás responsable de garantizar la integridad, disponibilidad y seguridad de los datos de la empresa.",
       "responsibilities": "- Administrar y mantener bases de datos PostgreSQL y MySQL en entornos de producción.\n- Implementar estrategias de backup y recuperación ante desastres.\n- Monitorear rendimiento de bases de datos y optimizar consultas.\n- Gestionar seguridad de bases de datos, usuarios y permisos.\n- Planificar y ejecutar actualizaciones y migraciones de bases de datos.\n- Resolver incidencias críticas relacionadas con bases de datos.\n- Documentar procedimientos y configuraciones.",
@@ -103,7 +134,12 @@
     "description": "Buscamos un especialista en ciberseguridad con conocimientos en protección de infraestructuras, análisis de vulnerabilidades y respuesta ante incidentes. Se valorará experiencia con SIEM y certificaciones de seguridad.",
     "modality": "remote",
     "level": "mid",
-    "technologies": ["siem", "penetration-testing", "firewall", "security-tools"],
+    "technologies": [
+      "siem",
+      "penetration-testing",
+      "firewall",
+      "security-tools"
+    ],
     "content": {
       "description": "SafeNet Solutions busca un Especialista en Ciberseguridad para proteger nuestros sistemas y datos contra amenazas. Trabajarás en la implementación de medidas de seguridad, análisis de riesgos y respuesta a incidentes de seguridad.",
       "responsibilities": "- Monitorear y analizar eventos de seguridad utilizando herramientas SIEM.\n- Realizar evaluaciones de vulnerabilidades y pruebas de penetración.\n- Implementar y gestionar soluciones de seguridad (firewalls, IDS/IPS).\n- Responder a incidentes de seguridad y realizar investigaciones forenses.\n- Desarrollar y mantener políticas y procedimientos de seguridad.\n- Mantenerse actualizado sobre amenazas emergentes y tendencias de seguridad.\n- Capacitar al personal en mejores prácticas de seguridad.",
@@ -119,7 +155,13 @@
     "description": "Estamos buscando un Product Manager con experiencia en la definición y lanzamiento de productos digitales. Se requiere capacidad analítica, liderazgo y conocimiento en metodologías ágiles.",
     "modality": "onsite",
     "level": "senior",
-    "technologies": ["agile", "scrum", "jira", "analytics", "product-strategy"],
+    "technologies": [
+      "agile",
+      "scrum",
+      "jira",
+      "analytics",
+      "product-strategy"
+    ],
     "content": {
       "description": "NextGen Technologies busca un Product Manager senior para liderar el desarrollo y lanzamiento de productos digitales innovadores. Serás responsable de definir la visión del producto, trabajar con stakeholders y guiar equipos multifuncionales.",
       "responsibilities": "- Definir y comunicar la visión y estrategia del producto.\n- Gestionar el backlog y priorizar features basadas en valor de negocio.\n- Colaborar con equipos de desarrollo, diseño y marketing.\n- Realizar investigación de mercado y análisis competitivo.\n- Analizar métricas de producto y tomar decisiones basadas en datos.\n- Planificar y coordinar lanzamientos de producto.\n- Recopilar feedback de usuarios y stakeholders.",
@@ -135,7 +177,12 @@
     "description": "Buscamos un desarrollador frontend con experiencia en React, TypeScript y Tailwind CSS. Se valorará conocimiento en optimización de rendimiento y accesibilidad web.",
     "modality": "onsite",
     "level": "mid",
-    "technologies": ["react", "typescript", "tailwind", "css"],
+    "technologies": [
+      "react",
+      "typescript",
+      "tailwind",
+      "css"
+    ],
     "content": {
       "description": "Bright Web Studio busca un Frontend Developer con experiencia en tecnologías modernas para crear interfaces web atractivas y de alto rendimiento. Trabajarás en proyectos diversos que requieren atención al detalle y excelencia técnica.",
       "responsibilities": "- Desarrollar y mantener aplicaciones web utilizando React y TypeScript.\n- Implementar diseños responsivos con Tailwind CSS.\n- Optimizar aplicaciones para máximo rendimiento y escalabilidad.\n- Garantizar accesibilidad web siguiendo estándares WCAG.\n- Colaborar con diseñadores y desarrolladores backend.\n- Escribir código limpio, mantenible y bien documentado.\n- Participar en code reviews y mejora continua.",
@@ -151,7 +198,12 @@
     "description": "Estamos buscando un desarrollador backend con experiencia en Node.js, Express y bases de datos NoSQL. Se requiere conocimiento en arquitectura de microservicios.",
     "modality": "onsite",
     "level": "mid",
-    "technologies": ["node", "express", "mongodb", "microservices"],
+    "technologies": [
+      "node",
+      "express",
+      "mongodb",
+      "microservices"
+    ],
     "content": {
       "description": "APIWorks busca un Backend Developer con experiencia en Node.js para desarrollar APIs robustas y escalables. Trabajarás en arquitecturas de microservicios y sistemas distribuidos de alto rendimiento.",
       "responsibilities": "- Diseñar y desarrollar APIs RESTful utilizando Node.js y Express.\n- Implementar lógica de negocio en arquitectura de microservicios.\n- Trabajar con bases de datos NoSQL, especialmente MongoDB.\n- Optimizar rendimiento de consultas y operaciones de base de datos.\n- Implementar autenticación, autorización y seguridad en APIs.\n- Escribir pruebas unitarias e integración.\n- Documentar APIs y código.",
