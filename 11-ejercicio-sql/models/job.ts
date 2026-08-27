@@ -17,8 +17,8 @@ export class JobModel {
     const contentQuery = `jc.description AS content_description, jc.responsibilities, jc.requirements, jc.about`;
     let dbQuery = `
     SELECT j.*, ${techsQuery}, ${contentQuery} FROM jobs j
-    INNER JOIN job_technologies jt ON j.id = jt.job_id
-    INNER JOIN job_content jc ON j.id = jc.job_id
+    LEFT JOIN job_technologies jt ON j.id = jt.job_id
+    LEFT JOIN job_content jc ON j.id = jc.job_id
     `;
 
     const conditions: string[] = [];
@@ -60,12 +60,14 @@ export class JobModel {
         modality: job.modality,
         level: job.level,
       },
-      content: {
-        description: job.content_description,
-        responsibilities: job.responsibilities,
-        requirements: job.requirements,
-        about: job.about,
-      },
+      content: job.content_description
+        ? {
+            description: job.content_description,
+            responsibilities: job.responsibilities,
+            requirements: job.requirements,
+            about: job.about,
+          }
+        : undefined,
     }));
 
     return jobs;
@@ -79,8 +81,8 @@ export class JobModel {
     const contentQuery = `jc.description AS content_description, jc.responsibilities, jc.requirements, jc.about`;
     let dbQuery = `
     SELECT j.*, ${techsQuery}, ${contentQuery} FROM jobs j
-    INNER JOIN job_technologies jt ON j.id = jt.job_id
-    INNER JOIN job_content jc ON j.id = jc.job_id
+    LEFT JOIN job_technologies jt ON j.id = jt.job_id
+    LEFT JOIN job_content jc ON j.id = jc.job_id
     WHERE j.id = ?
     GROUP BY j.id
     `;
@@ -102,12 +104,14 @@ export class JobModel {
         modality: job.modality,
         level: job.level,
       },
-      content: {
-        description: job.content_description,
-        responsibilities: job.responsibilities,
-        requirements: job.requirements,
-        about: job.about,
-      },
+      content: job.content_description
+        ? {
+            description: job.content_description,
+            responsibilities: job.responsibilities,
+            requirements: job.requirements,
+            about: job.about,
+          }
+        : undefined,
     };
   }
 
