@@ -38,7 +38,7 @@ const insertJob = db.prepare(`
     VALUES (?, ?, ?, ?, ?, ?, ?);
 `);
 
-const inserTechs = db.prepare(`
+const insertTechs = db.prepare(`
     INSERT OR IGNORE INTO job_technologies (job_id, technology)
     VALUES (?, ?);
 `);
@@ -61,7 +61,8 @@ const seed = db.transaction(() => {
     );
 
     job.technologies.forEach((tech) => {
-      inserTechs.run(job.id, tech);
+      // inserTechs.run(job.id, tech);
+      insertTechs.run(job.id, tech);
     });
 
     insertContent.run(
@@ -76,3 +77,7 @@ const seed = db.transaction(() => {
 });
 
 seed();
+
+/* Damos al usuario feedback de que ya terminó el seed y cerramos la base de datos */
+console.log("Tablas creadas y datos insertados correctamente");
+db.close();
