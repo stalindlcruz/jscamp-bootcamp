@@ -1,26 +1,77 @@
 import crypto from "node:crypto";
+import { db } from "../db/database";
 import type {
-  Job,
   CreateJobDTO,
-  UpdateJobDTO,
+  Job,
   JobFilters,
   JobRow,
+  UpdateJobDTO,
 } from "../types";
-import { db } from "../db/database";
+
+/* Esto lo usamos en `getAll` y en `getById`. Así que lo pasamos a una variable para simplificar y reutilizar */
+const BASE_QUERY = `
+  SELECT j.*,
+         GROUP_CONCAT(jt.technology, ' | ') AS technologies,
+         jc.description AS content_description,
+         jc.responsibilities, jc.requirements, jc.about
+  FROM jobs j
+  LEFT JOIN job_technologies jt ON j.id = jt.job_id
+  LEFT JOIN job_content jc ON j.id = jc.job_id
+`;
+
+/* Con esto parseamos los las filas de BBDD a el formato Job que está usando la aplicación. */
+/* Había un error en las technology, si no existían se rompía el código por hacer un split de algo que no existe. Mejoramos eso */
+function mapRowToJob(row: JobRow): Job {
+  return {
+    id: row.id,
+    title: row.title,
+    company: row.company,
+    location: row.location,
+    description: row.description,
+    data: {
+      technology: (row.technologies ?? "").split(" | ").filter(Boolean),
+      modality: row.modality,
+      level: row.level,
+    },
+    content: row.content_description
+      ? {
+          description: row.content_description,
+          responsibilities: row.responsibilities,
+          requirements: row.requirements,
+          about: row.about,
+        }
+      : undefined,
+  };
+}
+
+// Preparamos las consultas una sola vez al arrancar el servidor. "prepare" es lento, y antes se preparaban dentro de todas las funciones
+const insertJobStmt = db.prepare(`
+  INSERT INTO jobs (id, title, company, location, description, modality, level)
+  VALUES (?, ?, ?, ?, ?, ?, ?)
+`);
+
+// Usamos OR IGNORE por si nos llega una technology repetida. En vez de fallar simplemente lo ignora
+const insertTechStmt = db.prepare(`
+  INSERT OR IGNORE INTO job_technologies (job_id, technology)
+  VALUES (?, ?)
+`);
+
+// Guardamos el contenido, y si falla, si queremos que devuelva un error
+const insertContentStmt = db.prepare(`
+  INSERT INTO job_content (id, job_id, description, responsibilities, requirements, about)
+  VALUES (?, ?, ?, ?, ?, ?)
+`);
 
 export class JobModel {
-  // Obtener todos los jobs con filtros opcionales
   static async getAll(filters?: JobFilters): Promise<Job[]> {
     // TODO: Debemos hacer la consulta a la base de datos para obtener todos los resultados, y por cada filtro, debemos agregarlo a la consulta
-
-    const techsQuery = `GROUP_CONCAT(jt.technology, ' | ') AS technologies`;
+   /*  const techsQuery = `GROUP_CONCAT(jt.technology, ' | ') AS technologies`;
     const contentQuery = `jc.description AS content_description, jc.responsibilities, jc.requirements, jc.about`;
     let dbQuery = `
     SELECT j.*, ${techsQuery}, ${contentQuery} FROM jobs j
     LEFT JOIN job_technologies jt ON j.id = jt.job_id
     LEFT JOIN job_content jc ON j.id = jc.job_id
-    `;
-
+    `; */
     const conditions: string[] = [];
     const params: unknown[] = [];
 
@@ -41,43 +92,18 @@ export class JobModel {
       params.push(filters.level);
     }
 
-    if (conditions.length > 0) {
-      dbQuery = `${dbQuery} WHERE ${conditions.join(" AND ")}`;
-    }
+    // Si hay filtros los unimos con WHERE; si no hay, no se agrega nada
+    const where = conditions.length ? ` WHERE ${conditions.join(" AND ")}` : "";
 
-    dbQuery = `${dbQuery} GROUP BY j.id`;
+    const rows = db
+      .prepare<unknown[], JobRow>(`${BASE_QUERY}${where} GROUP BY j.id`)
+      .all(...params);
 
-    const dbResult = db.prepare<unknown[], JobRow>(dbQuery).all(...params);
-
-    const jobs = dbResult.map((job) => ({
-      id: job.id,
-      title: job.title,
-      company: job.company,
-      location: job.location,
-      description: job.description,
-      data: {
-        technology: job.technologies.split(" | "),
-        modality: job.modality,
-        level: job.level,
-      },
-      content: job.content_description
-        ? {
-            description: job.content_description,
-            responsibilities: job.responsibilities,
-            requirements: job.requirements,
-            about: job.about,
-          }
-        : undefined,
-    }));
-
-    return jobs;
+    return rows.map(mapRowToJob);
   }
-
-  // Obtener un job por ID
   static async getById(id: string): Promise<Job | undefined> {
     // TODO: Debemos hacer la consulta a la base de datos para obtener el job por ID
-
-    const techsQuery = `GROUP_CONCAT(jt.technology, ' | ') AS technologies`;
+    /* const techsQuery = `GROUP_CONCAT(jt.technology, ' | ') AS technologies`;
     const contentQuery = `jc.description AS content_description, jc.responsibilities, jc.requirements, jc.about`;
     let dbQuery = `
     SELECT j.*, ${techsQuery}, ${contentQuery} FROM jobs j
@@ -112,7 +138,12 @@ export class JobModel {
             about: job.about,
           }
         : undefined,
-    };
+    }; */
+    const row = db
+      .prepare<string[], JobRow>(`${BASE_QUERY} WHERE j.id = ? GROUP BY j.id`)
+      .get(id);
+
+    return row ? mapRowToJob(row) : undefined;
   }
 
   // Crear un nuevo job
@@ -123,7 +154,7 @@ export class JobModel {
     };
 
     // TODO: Debemos insertar el job en la base de datos
-    const insertJob = db.prepare(`
+    /* const insertJob = db.prepare(`
     INSERT OR IGNORE INTO jobs (id, title, company, location, description, modality, level)
     VALUES (?, ?, ?, ?, ?, ?, ?); `);
 
@@ -133,10 +164,10 @@ export class JobModel {
 
     const insertContent = db.prepare(`
     INSERT OR IGNORE INTO job_content (id, job_id, description, responsibilities, requirements, about)
-    VALUES (?, ?, ?, ?, ?, ?); `);
+    VALUES (?, ?, ?, ?, ?, ?); `); */
 
     const transaction = db.transaction(() => {
-      insertJob.run(
+      insertJobStmt.run(
         newJob.id,
         newJob.title,
         newJob.company,
@@ -147,11 +178,11 @@ export class JobModel {
       );
 
       newJob.data.technology.forEach((tech) => {
-        inserTechs.run(newJob.id, tech);
+        insertTechStmt.run(newJob.id, tech);
       });
 
       if (newJob.content) {
-        insertContent.run(
+        insertContentStmt.run(
           crypto.randomUUID(),
           newJob.id,
           newJob.content.description,
@@ -181,59 +212,68 @@ export class JobModel {
 
   // Actualizar un job
   static async update(id: string, input: UpdateJobDTO): Promise<Job | null> {
-    // TODO: Debemos actualizar el job en la base de datos
-    const conditions: string[] = [];
-    const params: unknown[] = [];
+    // Buscamos el job primero, sin tocar nada todavía
+    const exists = db
+      .prepare<string[], unknown>(`SELECT 1 FROM jobs WHERE id = ?`)
+      .get(id);
 
-    let dbQuery = `UPDATE jobs SET `;
-
-    if (input.title) {
-      conditions.push(`title = ?`);
-      params.push(input.title);
+    if (!exists) {
+      return null;
     }
 
-    if (input.company) {
-      conditions.push(`company = ?`);
-      params.push(input.company);
-    }
+    const applyUpdate = db.transaction(() => {
+      const conditions: string[] = [];
+      const params: unknown[] = [];
 
-    if (input.location) {
-      conditions.push(`location = ?`);
-      params.push(input.location);
-    }
+      if (input.title) {
+        conditions.push(`title = ?`);
+        params.push(input.title);
+      }
 
-    if (input.description) {
-      conditions.push(`description = ?`);
-      params.push(input.description);
-    }
+      if (input.company) {
+        conditions.push(`company = ?`);
+        params.push(input.company);
+      }
 
-    if (input.data?.modality) {
-      conditions.push(`modality = ?`);
-      params.push(input.data.modality);
-    }
+      if (input.location) {
+        conditions.push(`location = ?`);
+        params.push(input.location);
+      }
 
-    if (input.data?.level) {
-      conditions.push(`level = ?`);
-      params.push(input.data.level);
-    }
+      if (input.description) {
+        conditions.push(`description = ?`);
+        params.push(input.description);
+      }
 
-    if (conditions.length > 0) {
-      dbQuery = `${dbQuery} ${conditions.join(", ")} WHERE id = ?`;
-      params.push(id);
+      if (input.data?.modality) {
+        conditions.push(`modality = ?`);
+        params.push(input.data.modality);
+      }
 
-      db.prepare<unknown[], JobRow>(dbQuery).run(...params);
-    }
+      if (input.data?.level) {
+        conditions.push(`level = ?`);
+        params.push(input.data.level);
+      }
 
-    if (input.data?.technology) {
-      db.prepare(`DELETE FROM job_technologies WHERE job_id = ?`).run(id);
+      if (conditions.length > 0) {
+        params.push(id);
 
-      const insertTech = db.prepare(
-        `INSERT INTO job_technologies (job_id, technology) VALUES (?, ?)`,
-      );
-      input.data.technology.forEach((tech) => {
-        insertTech.run(id, tech);
-      });
-    }
+        db.prepare<unknown[], JobRow>(
+          `UPDATE jobs SET ${conditions.join(", ")} WHERE id = ?`,
+        ).run(...params);
+      }
+
+      if (input.data?.technology) {
+        // Borramos las tecnologías viejas y metemos las nuevas, pero todo dentro de la misma transacción (si algo falla deshacemos todo lo que se hizo dentro de la transaction)
+        db.prepare(`DELETE FROM job_technologies WHERE job_id = ?`).run(id);
+
+        input.data.technology.forEach((tech) => {
+          insertTechStmt.run(id, tech);
+        });
+      }
+    });
+
+    applyUpdate();
 
     const updatedJob = await JobModel.getById(id);
 
