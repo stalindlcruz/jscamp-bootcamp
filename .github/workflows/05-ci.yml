@@ -1,0 +1,82 @@
+name: 05 - CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  frontend-lint:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-pnpm-ci-cd
+      - name: Frontend Lint
+        working-directory: ./12-ejercicio-cicd
+        run: |
+          echo "::group::Frontend Lint"
+          pnpm lint:frontend
+          echo "::endgroup::"
+
+  frontend-test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-pnpm-ci-cd
+      - name: Frontend Test
+        working-directory: ./12-ejercicio-cicd
+        run: |
+          echo "::group::Frontend Test"
+          pnpm test:frontend
+          echo "::endgroup::"
+
+  frontend-build:
+    needs: [frontend-lint, frontend-test]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-pnpm-ci-cd
+      - name: Frontend Build
+        working-directory: ./12-ejercicio-cicd
+        run: |
+          echo "::group::Frontend Build"
+          pnpm build:frontend
+          echo "::endgroup::"
+
+  backend-lint:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-pnpm-ci-cd
+      - name: Backend Lint
+        working-directory: ./12-ejercicio-cicd
+        run: |
+          echo "::group::Backend Lint"
+          pnpm lint:backend
+          echo "::endgroup::"
+
+  backend-test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-pnpm-ci-cd
+      - name: Backend Test
+        working-directory: ./12-ejercicio-cicd
+        run: |
+          echo "::group::Backend Test"
+          pnpm test:backend
+          echo "::endgroup::"
+
+  backend-build:
+    needs: [backend-lint, backend-test]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-pnpm-ci-cd
+      - name: Backend Build
+        working-directory: ./12-ejercicio-cicd
+        run: |
+          echo "::group::Backend Build"
+          pnpm build:backend
+          echo "::endgroup::"
