@@ -6,7 +6,7 @@ on:
       logging_level:
         description: "Nivel de log"
         required: true
-        default: "info"
+        default: "INFO" # La opción por defecto debe estar escrita tal cual como aparece en la lista de opciones. Lo pasamos a mayúsculas
         type: choice
         options:
           - INFO
