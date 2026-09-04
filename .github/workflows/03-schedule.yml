@@ -1,9 +1,9 @@
 name: 03 - Schedule
 
 on:
-  schedule:
-    # Las posiciones indican: minuto - hora - día del mes - mes - día de la semana
-    - cron: "0 9 * * MON"
+  # schedule:
+  #   # Las posiciones indican: minuto - hora - día del mes - mes - día de la semana
+  #   - cron: "0 9 * * MON"
   workflow_dispatch:
 
 jobs:
